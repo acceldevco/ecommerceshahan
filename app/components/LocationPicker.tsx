@@ -121,7 +121,8 @@ export default function LocationPicker({
 }: any) {
   var [map, setmap] = useStorage("location", {});
   const [location, setLocation] = useState<any>({
-    ...map, lat: 35.6892,
+    ...map,
+     lat: 35.6892,
     lng: 51.3890,
   });
 
