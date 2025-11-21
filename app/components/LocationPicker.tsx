@@ -120,7 +120,10 @@ export default function LocationPicker({
   defaultLocation,
 }: any) {
   var [map, setmap] = useStorage("location", {});
-  const [location, setLocation] = useState<any>({ ...map });
+  const [location, setLocation] = useState<any>({
+    ...map, lat: 35.6892,
+    lng: 51.3890,
+  });
 
   // --- مقداردهی اولیه اگر defaultLocation وجود داشته باشد ---
   useEffect(() => {
