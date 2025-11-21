@@ -22,7 +22,7 @@ export async function GET() {
     });
 
     // گروه‌بندی بر اساس ماه و سال
-    const revenueByMonth = monthlyRevenue.reduce((acc: any, item) => {
+    const revenueByMonth = monthlyRevenue.reduce((acc: any, item:any) => {
       const date = new Date(item.createdAt);
       const monthYear = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
       
