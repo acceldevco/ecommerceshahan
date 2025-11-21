@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  // url      = env("DATABASE_URLLOCAL")
+}
+
+/// ///////////////////////////////////////////////////
+model Store {
+  id       Int     @id @default(autoincrement())
+  name     String
+  currency String
+  orders   Order[]
+}
+
+model Category {
+  id            Int           @id @default(autoincrement())
+  name          String
+  parentId      Int?
+  imageUrl      String?
+  parent        Category?     @relation("CategoryToSubcategories", fields: [parentId], references: [id])
+  subcategories Category[]    @relation("CategoryToSubcategories")
+  subCats       SubCategory[]
+  products      Product[]     @relation("ProductCategories")
+}
+
+model SubCategory {
+  id         Int      @id @default(autoincrement())
+  title      String
+  url        String
+  size       Int
+  categoryId Int
+  imageUrl   String?
+  category   Category @relation(fields: [categoryId], references: [id])
+}
+
+model Product {
+  id              Int                @id @default(autoincrement())
+  name            String
+  description     String?
+  price           Int
+  discountedPrice Int?
+  image           String?
+  stock           Int                @default(0)
+  sku             String?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @default(now()) @updatedAt
+  cartItems       CartItem[]
+  files           File[]
+  orderItems      OrderItem[]
+  attributes      ProductAttribute[]
+  reviews         Review[]
+  categories      Category[]         @relation("ProductCategories")
+}
+
+model ProductAttribute {
+  id        Int     @id @default(autoincrement())
+  key       String
+  value     String
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Banner {
+  id        Int             @id @default(autoincrement())
+  title     String
+  imageUrl  String
+  position  BannerPosition?
+  isActive  Boolean         @default(true)
+  link      String?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model File {
+  id        Int      @id @default(autoincrement())
+  title     String
+  url       String
+  size      Int
+  productId Int?
+  product   Product? @relation(fields: [productId], references: [id])
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  phone     String?
+  address   String?
+  codepost  String?
+  role      Role     @default(CUSTOMER)
+  password  String
+  lat       Decimal? @db.Decimal(10, 8)
+  lng       Decimal? @db.Decimal(11, 8)
+  storeId   Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  cart      Cart?
+  orders    Order[]
+  reviews   Review[]
+}
+
+model Cart {
+  id     Int        @id @default(autoincrement())
+  userId Int        @unique
+  total  Int        @default(0)
+  user   User       @relation(fields: [userId], references: [id])
+  items  CartItem[]
+}
+
+model CartItem {
+  id         Int     @id @default(autoincrement())
+  cartId     Int
+  productId  Int
+  quantity   Int     @default(1)
+  unitPrice  Int
+  totalPrice Int
+  cart       Cart    @relation(fields: [cartId], references: [id])
+  product    Product @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  storeId   Int?
+  total     Int
+  status    OrderStatus @default(PROCESSING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  store     Store?      @relation(fields: [storeId], references: [id])
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int     @default(1)
+  unitPrice Int
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        Int          @id @default(autoincrement())
+  rating    Int          @default(5)
+  comment   String?
+  productId Int
+  userId    Int
+  status    ReviewStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  product   Product      @relation(fields: [productId], references: [id])
+  user      User         @relation(fields: [userId], references: [id])
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum OrderStatus {
+  PROCESSING
+  PAID
+  SENT
+  DELIVERED
+  CANCELED
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
+}
+
+enum BannerPosition {
+  TOP
+  MIDDLE
+  BOTTOM
+  LEFT
+  RIGHT
+}
