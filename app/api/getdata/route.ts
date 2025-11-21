@@ -13,7 +13,7 @@ type TableName =
   | "cartitem"
   | "order"
   | "orderitem"
-  | "banner"|'review';
+  | "banner";
 
 export async function POST(req: NextRequest) {
   // prisma.review.findMany()
@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
       order: prisma.order,
       orderitem: prisma.orderItem,
       banner: prisma.banner,
-      review:prisma.review
+      // review:prisma.review
     };
 
     const model = models[table.toLowerCase() as TableName];
