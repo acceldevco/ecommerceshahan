@@ -1,12 +1,12 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-  // url      = env("DATABASE_URLLOCAL")
 }
 
 /// ///////////////////////////////////////////////////
@@ -15,6 +15,7 @@ model Store {
   name     String
   currency String
   orders   Order[]
+  User     User[]
 }
 
 model Category {
@@ -53,7 +54,6 @@ model Product {
   files           File[]
   orderItems      OrderItem[]
   attributes      ProductAttribute[]
-  reviews         Review[]
   categories      Category[]         @relation("ProductCategories")
 }
 
@@ -91,17 +91,14 @@ model User {
   email     String   @unique
   phone     String?
   address   String?
-  codepost  String?
   role      Role     @default(CUSTOMER)
   password  String
-  lat       Decimal? @db.Decimal(10, 8)
-  lng       Decimal? @db.Decimal(11, 8)
   storeId   Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   cart      Cart?
   orders    Order[]
-  reviews   Review[]
+  Store     Store?   @relation(fields: [storeId], references: [id])
 }
 
 model Cart {
@@ -144,25 +141,6 @@ model OrderItem {
   unitPrice Int
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-}
-
-model Review {
-  id        Int          @id @default(autoincrement())
-  rating    Int          @default(5)
-  comment   String?
-  productId Int
-  userId    Int
-  status    ReviewStatus @default(PENDING)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  product   Product      @relation(fields: [productId], references: [id])
-  user      User         @relation(fields: [userId], references: [id])
-}
-
-enum ReviewStatus {
-  PENDING
-  APPROVED
-  REJECTED
 }
 
 enum OrderStatus {
