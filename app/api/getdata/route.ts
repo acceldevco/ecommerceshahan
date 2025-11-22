@@ -2,6 +2,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/prisma";
 
+
+
 type TableName =
   | "store"
   | "category"
@@ -13,93 +15,14 @@ type TableName =
   | "cartitem"
   | "order"
   | "orderitem"
-  | "banner";
+  | "banner" | "review";
 
 export async function POST(req: NextRequest) {
-  // prisma.review.findMany()
-  // prisma.product.findMany({
-  //   include:{
-  //     reviews:{
-  //       include:{
-  //         user:{
-  //           select:{
-  //             email:true,
-  //             name:true
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // })
-  // prisma.category.findMany({
-  //   include:{
-  //     subcategories:true
-  //   }
-  // })
-//  prisma.product.findMany({
-//   include:{
-//     categories:true
-//   }
-//  })
-  //  var t0=await prisma.banner.findMany({
-  //   include:{
-  //     file:true
-  //   }
-  //   // where:{
-  //   //   categories:{
-  //   //     some: {
-  //   //       id:{
-  //   //         in:
-  //   //       }
-  //   //     }
-  //   //   }
-  //   // }
-  // })
-
-// console.log(t0);
-
-  // var t = await prisma.order.findMany({
-  //   include: {
-  //     user: true,
-  //     items: {
-  //       include: {
-  //         product: true,
-  //       },
-  //     },
-  //   },
-  // });
-  // console.log(t);
-
-  //    var t =await prisma.category.findMany({
-
-  //       where: { parentId: null },
-  //       include: {
-
-  //         subcategories: {
-  //           include: {
-  //             subcategories: {
-  //               include: {
-  //                 subcategories: true,
-  //               },
-  //             },
-  //           },
-  //         },
-  //       },
-  //     })
-  // console.log(t);
-
-  //  var t = await prisma.product.findMany({
-  //       include: {
-  //         attributes: true,
-  //         category: true,
-  //       },
-  //   })
-  //   console.log(t);
 
   try {
     const body = await req.json();
-    const params = body; // body?.table//body?.params || {};
-    // console.log("da", body);
+    const params = body; 
+  
 
     const {
       table,
@@ -129,7 +52,7 @@ export async function POST(req: NextRequest) {
       order: prisma.order,
       orderitem: prisma.orderItem,
       banner: prisma.banner,
-      // review:prisma.review
+      review:prisma.review
     };
 
     const model = models[table.toLowerCase() as TableName];

@@ -5,7 +5,7 @@
 // prisma
 // var prisma = new PrismaClient();
 
-import { PrismaClient } from '../generated/prisma'
+import { PrismaClient } from '@prisma/client'
 import bcrypt from "bcryptjs";
 var prisma = new PrismaClient();
 // PrismaClient

@@ -1375,7 +1375,7 @@ import {
   Plus,
   Save,
 } from "lucide-react";
-import { useLoading } from "../hook/loadingData";
+// import { useLoading } from "../hook/loadingData";
 
 const NestedCategoryCheckbox = ({
   onSelectionChange,
@@ -1425,7 +1425,10 @@ const NestedCategoryCheckbox = ({
     console.log("selected", selected.length > 0);
 
     if (selected.length > 0) {
-      setCheckedIds(new Set(selected.map((d: any) => d.id)));
+      setCheckedIds(
+        // new Set([1])
+        new Set(selected.map((d: any) => d.id))
+      );
     }
   }, [selected]);
 
@@ -1534,10 +1537,19 @@ const NestedCategoryCheckbox = ({
   };
 
   const getCheckboxState = (cat: any) => {
+    
+
     const allIds = getAllChildrenIds(cat);
+
     const checkedCount = allIds.filter((id) => checkedIds.has(id)).length;
+    // console.log("getCheckboxState", checkedCount,checkedCount,allIds,cat,allIds.length);
     if (checkedCount === 0) return "unchecked";
-    if (checkedCount === allIds.length) return "checked";
+    // if (checkedCount === allIds.length) return "checked";
+    // console.log('selected',selected.find((d) => d === cat.id) !==undefined);
+
+    if (selected.find((d) => d.id === cat.id) !==undefined)  return "checked";
+
+    // console.log(selected.find((d) => d.id === cat.id) !==undefined);
     return "indeterminate";
   };
 
@@ -1588,6 +1600,8 @@ const NestedCategoryCheckbox = ({
   };
 
   const CategoryItem = ({ category, level = 0 }: any) => {
+    // console.log("category", category);
+
     const hasChildren = category.subcategories?.length > 0;
     const isExpanded = expandedIds.has(category.id);
     const checkboxState = getCheckboxState(category);
@@ -1616,6 +1630,7 @@ const NestedCategoryCheckbox = ({
           )}
 
           <div className="flex items-center flex-1 gap-2">
+            {/* {JSON.stringify(checkboxState)} */}
             <input
               type="checkbox"
               checked={checkboxState === "checked"}

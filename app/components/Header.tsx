@@ -384,7 +384,8 @@ const MegaMenu = ({ datacategory }: any) => {
         {subcategories.map((subcategory) => (
           <div key={subcategory.id} className="space-y-2">
             <a
-              href={`/categories/${subcategory.slug}`}
+              href={`archiveproduct?cate=${subcategory.id}`}
+              // href={`/categories/${subcategory.slug}`}
               className="block px-3 py-2 text-sm text-gray-600 hover:text-[#8a8b7a] hover:bg-gray-50 rounded-lg transition-colors font-medium"
             >
               {subcategory.name}
@@ -425,7 +426,7 @@ const MegaMenu = ({ datacategory }: any) => {
   }, []);
 
   return (
-    <div className="relative z-9999" ref={menuRef}>
+    <div className="relative z-99" ref={menuRef}>
       {/* MOBILE MENU BUTTON */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -509,9 +510,12 @@ const MegaMenu = ({ datacategory }: any) => {
                     <div className="grid grid-cols-3 gap-6">
                       {activeCategory.subcategories?.map((subcategory: any) => (
                         <div key={subcategory.id} className="space-y-4">
-                          <h4 className="font-semibold text-lg text-gray-900 border-b border-gray-200 pb-2">
+                          <a
+                            href={`archiveproduct?cate=${subcategory.id}`}
+                            className="font-semibold text-lg text-gray-900 border-b border-gray-200 pb-2"
+                          >
                             {subcategory.name}
-                          </h4>
+                          </a>
                           {renderDesktopSubcategories(
                             subcategory.subcategories
                           )}
@@ -546,7 +550,7 @@ const MegaMenu = ({ datacategory }: any) => {
 
       {/* MOBILE MENU */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden h-[100vh] z-9999 fixed inset-0 bg-black/50 backdrop-blur-sm">
+        <div className="lg:hidden h-[100vh] z-99 fixed inset-0 bg-black/50 backdrop-blur-sm">
           <div className="absolute right-0 top-0 h-full w-80 bg-white shadow-2xl animate-slideInRight">
             {/* HEADER */}
             <div className="flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10">
@@ -562,8 +566,8 @@ const MegaMenu = ({ datacategory }: any) => {
             {/* CONTENT */}
             <div className="overflow-y-auto pb-20">
               <div className="p-4 space-y-1">
-                {JSON.stringify(data?.data)}
-                {/* {sampleCategories?.map((category: any) => {
+                {/* {JSON.stringify(data?.data)} */}
+                {data?.data?.map((category: any) => {
                   const open = openPath[0] === category.id;
 
                   return (
@@ -599,7 +603,7 @@ const MegaMenu = ({ datacategory }: any) => {
                       )}
                     </div>
                   );
-                })} */}
+                })}
               </div>
             </div>
 
@@ -634,7 +638,7 @@ const UserProfile: any = () => (
         {/* {JSON.parse(localStorage.user?? '{}')?.name} */}
       </span>
       <span className="text-[10px] text-[#5a5b4a]/70 mt-0.5">
-      {/* {JSON.parse(localStorage.user??'{}')?.email} */}
+        {/* {JSON.parse(localStorage.user??'{}')?.email} */}
       </span>
     </div>
 
@@ -668,7 +672,7 @@ function Header({ datacategory }: any) {
             </a>
           ))}
           {/* --------------------------search--------------------- */}
-          {/* <SimpleBeautifulSearch /> */}
+          <SimpleBeautifulSearch />
           {/* --------------------------search--------------------- */}
           {/* <div className="relative w-full ">
             <input

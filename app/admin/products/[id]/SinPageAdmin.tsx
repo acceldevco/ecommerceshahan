@@ -245,28 +245,28 @@ export default function ProfessionalProductPage() {
     //       textbottelegram
     //     );
 
-    await sendImageToTelegram(
-      photo,
-      "@shahangallery_ir",
-      "8566261884:AAGUgc_Cf_GUWuU-oRnnMXOIXXAtoaJBYyU",
-      `
-🔥 <b>${productData?.name}</b> 🔥
+//     await sendImageToTelegram(
+//       photo,
+//       "@shahangallery_ir",
+//       "8566261884:AAGUgc_Cf_GUWuU-oRnnMXOIXXAtoaJBYyU",
+//       `
+// 🔥 <b>${productData?.name}</b> 🔥
 
-💰 قیمت: <i>${productData?.price?.toLocaleString("fa")} تومان</i>
-${
-  productData?.discountedPrice
-    ? `💸 قیمت قبل: <del>${productData?.discountedPrice?.toLocaleString(
-        "fa"
-      )} تومان</del>`
-    : ""
-}
+// 💰 قیمت: <i>${productData?.price?.toLocaleString("fa")} تومان</i>
+// ${
+//   productData?.discountedPrice
+//     ? `💸 قیمت قبل: <del>${productData?.discountedPrice?.toLocaleString(
+//         "fa"
+//       )} تومان</del>`
+//     : ""
+// }
 
-📝 <strong>${productData?.description ?? ""}</strong>
+// 📝 <strong>${productData?.description ?? ""}</strong>
 
-🔗 <b><a href="https://chatgpt.com/c/691c8800-06b4-832d-8600-3c7273b1492f">مشاهده و خرید محصول</a></b>
-✨ فرصت را از دست ندهید!
-`
-    );
+// 🔗 <b><a href="https://chatgpt.com/c/691c8800-06b4-832d-8600-3c7273b1492f">مشاهده و خرید محصول</a></b>
+// ✨ فرصت را از دست ندهید!
+// `
+//     );
     // await axios.post(
     //   `https://api.telegram.org/bot8566261884:AAGUgc_Cf_GUWuU-oRnnMXOIXXAtoaJBYyU/sendPhoto`,
     //   {
@@ -880,6 +880,7 @@ ${
 
                 <div className="p-6">
                   <div className="space-y-3 mb-4">
+                    {/* {JSON.stringify(data?.data?.[0]?.categories)} */}
                     <NestedCategoryCheckbox
                       datacat={datacat}
                       selected={data?.data?.[0]?.categories ?? []}

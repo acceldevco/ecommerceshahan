@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
+  var [co,setco]=useState([])
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const router = useRouter();
@@ -21,20 +21,49 @@ export default function ProductsPage() {
   // //   // تبدیل به آبجکت
   const paramsObject = Object.fromEntries(paramsArray);
 
-  var configmain:any = {
+  var configmain: any = {
     table: "product",
 
     pageSize: 2,
     filters: { include: { categories: true, files: true } },
   };
-  const { data, fetchData, loading, hasMore, loadMore }:any =
-  useLoading({
+  const { data, fetchData, loading, hasMore, loadMore }: any = useLoading({
     url: "/api/getdata",
     initialData: configmain,
   });
+  // console.log('params?.category :',params?.cate.split(',').map(d=>parseInt(d)) );
 
+  var datacategory1: any = useLoading({
+    url: "/api/getdata",
+    submitUrl: "/api/main",
 
-    var datacategory = useLoading({
+    initialData: {
+      pageSize: 10000,
+      table: "category",
+      filters: {
+        where: {
+          id: {
+            in: params?.cate
+              ? params?.cate?.split(",").map((d) => parseInt(d))
+              : 0,
+          },
+        },
+        // include: {
+        //   subcategories: {
+        //     include: {
+        //       subcategories: {
+        //         include: {
+        //           subcategories: true,
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
+      },
+    },
+  });
+
+  var datacategory = useLoading({
     url: "/api/getdata",
     submitUrl: "/api/main",
 
@@ -58,13 +87,6 @@ export default function ProductsPage() {
     },
   });
 
-
-
-
-
-
-
-
   useEffect(() => {
     if (data?.data) {
       setProducts((prev) => (page === 1 ? data.data : [...data.data]));
@@ -72,9 +94,9 @@ export default function ProductsPage() {
   }, [data, page]);
 
   const filteredProducts = products.filter(
-    (p:any) =>
+    (p: any) =>
       !categoryIds.length ||
-      p.categories?.some((c:any) => categoryIds.includes(String(c.id)))
+      p.categories?.some((c: any) => categoryIds.includes(String(c.id)))
   );
 
   return (
@@ -95,8 +117,6 @@ export default function ProductsPage() {
 
       {/* Main Content */}
 
-
-     
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Products Section */}
@@ -123,7 +143,7 @@ export default function ProductsPage() {
 
             {/* Products Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-              {filteredProducts.map((product:any) => (
+              {filteredProducts.map((product: any) => (
                 <div
                   key={product.id}
                   className="transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
@@ -234,14 +254,28 @@ export default function ProductsPage() {
                   دسته‌بندی‌ها
                 </h4>
                 <div className="max-h-96 overflow-y-auto">
+                  {/* {JSON.stringify(datacategory1.data.data)} */}
                   <NestedCategoryCheckbox
-                  datacat={datacategory}
+                    selected={[
+                      ...(datacategory1?.data?.data ?? []),
+                      ...(co)
+                      // 1,2
+                      // {
+                      //   id: 6,
+                      //   name: "Gaming Laptops",
+                      //   parentId: 3,
+                      //   imageUrl: null,
+                      //   subcategories: [],
+                      // },
+                    ]}
+                    datacat={datacategory}
                     showcnt={false}
-                    onSelectionChange={(selected:any) => {
-                      const ids = selected.map((d:any) => d.id);
-                      // router.push(`?page=${page}`);
-
-                      // console.log(page);
+                    onSelectionChange={(selected: any) => {
+                      const ids = selected.map((d: any) => d.id);
+                      router.push(
+                        `?cate=${selected.map((d:any) => d.id).join(",")}`
+                      );
+                      // console.log(selected.map((d)=>d.id).join(','));
 
                       fetchData(
                         true,
@@ -264,8 +298,9 @@ export default function ProductsPage() {
                           : configmain
                       );
                       // paramsObject.category ? router.push(`?`) : "0";
-                      console.log(configmain);
 
+                      console.log(datacategory1?.data?.data);
+setco(selected)
                       // setPage(1);
                     }}
                   />
