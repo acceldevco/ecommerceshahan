@@ -84,7 +84,7 @@ export default function CategoryGrid({
                 {/* Main Container */}
                 <div className={getVariantStyles(isActive)}>
                   {/* Image Container */}
-                  <div className={`absolute inset-2 rounded-xl overflow-hidden ${
+                  <a href={`archiveproduct?cate=${category.id}`} className={`absolute inset-2 rounded-xl overflow-hidden ${
                     variant === 'gradient' ? 'bg-white/20' : 'bg-white'
                   }`}>
                     <Image
@@ -103,7 +103,7 @@ export default function CategoryGrid({
                         ? 'bg-stone-500/5 group-hover:bg-stone-500/0' 
                         : 'bg-stone-500/0 group-hover:bg-stone-500/5'
                     } ${isActive ? 'bg-stone-500/5' : ''}`} />
-                  </div>
+                  </a>
 
                   {/* Product Count */}
                   {category.productCount && (
