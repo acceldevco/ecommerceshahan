@@ -71,28 +71,34 @@ export default function SingleProductPage() {
   const [activeTab, setActiveTab] = useState("description");
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-  const product = {
-    id: 1,
-    name: "گوشی موبایل اپل آیفون 15 پرو مکس",
-    brand: "Apple",
-    category: "موبایل و تبلت",
-    price: 59_900_000,
-    originalPrice: 69_900_000,
-    discount: 14,
-    rating: 4.8,
-    reviewCount: 1247,
-    inStock: true,
-    stockCount: 15,
-    sku: "APL-IP15PM-256-SG",
-    tags: ["پرچمدار", "دوربین عالی", "پردازنده A17", "5G"],
-    features: [
-      "پردازنده A17 Pro",
-      "دوربین 48 مگاپیکسل",
-      "نمایشگر 6.7 اینچی",
-      "مقاوم در برابر آب IP68",
-      "باتری 4441 میلی‌آمپر",
-    ],
-  };
+
+  useLoading({
+    
+  })
+
+  const product = {}
+  // {
+  //   id: 1,
+  //   name: "گوشی موبایل اپل آیفون 15 پرو مکس",
+  //   brand: "Apple",
+  //   category: "موبایل و تبلت",
+  //   price: 59_900_000,
+  //   originalPrice: 69_900_000,
+  //   discount: 14,
+  //   rating: 4.8,
+  //   reviewCount: 1247,
+  //   inStock: true,
+  //   stockCount: 15,
+  //   sku: "APL-IP15PM-256-SG",
+  //   tags: ["پرچمدار", "دوربین عالی", "پردازنده A17", "5G"],
+  //   features: [
+  //     "پردازنده A17 Pro",
+  //     "دوربین 48 مگاپیکسل",
+  //     "نمایشگر 6.7 اینچی",
+  //     "مقاوم در برابر آب IP68",
+  //     "باتری 4441 میلی‌آمپر",
+  //   ],
+  // };
 
   const images = data?.data?.[0]?.files?.map((d: any) => d.url) ?? [];
   // [
@@ -214,7 +220,7 @@ export default function SingleProductPage() {
           borderColor: colorPalette.primaryDark,
         }}
       >
-        <div className="container mx-auto px-4 py-3">
+        {/* <div className="container mx-auto px-4 py-3">
           <div
             className="flex items-center space-x-2 text-sm"
             style={{ color: colorPalette.text }}
@@ -227,7 +233,7 @@ export default function SingleProductPage() {
             <span>/</span>
             <span className="font-medium">{product.name}</span>
           </div>
-        </div>
+        </div> */}
       </nav>
 
       <div className="container mx-auto px-4 py-8">
@@ -334,7 +340,7 @@ export default function SingleProductPage() {
             {/* Header */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span
+                {/* <span
                   className="text-sm px-2 py-1 rounded"
                   style={{
                     backgroundColor: colorPalette.primaryLight,
@@ -342,7 +348,7 @@ export default function SingleProductPage() {
                   }}
                 >
                   {product.brand}
-                </span>
+                </span> */}
                 <span
                   className="text-sm px-2 py-1 rounded"
                   style={{
@@ -350,7 +356,8 @@ export default function SingleProductPage() {
                     color: colorPalette.text,
                   }}
                 >
-                  {product.inStock ? "موجود در انبار" : "ناموجود"}
+                  {/* {JSON.stringify(product)} */}
+                  {data?.data?.[0]?.stock ? "موجود در انبار" : "ناموجود"}
                 </span>
               </div>
 

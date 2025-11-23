@@ -67,6 +67,7 @@ import prisma from "@/prisma/prisma";
 import bcrypt from "bcryptjs";
 import { signToken } from "@/utils/jwt";
 import { sendVerificationEmail } from "@/utils/sendemail";
+import { CSRF } from "@/utils/crypto";
 
 export async function POST(req: NextRequest) {
   const { name, email, password, phone, address } = await req.json();
@@ -81,10 +82,7 @@ export async function POST(req: NextRequest) {
   // چک کاربر
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (existingUser) {
-    return NextResponse.json(
-      { error: "User already exists" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "User already exists" }, { status: 400 });
   }
 
   // هش کردن
@@ -117,13 +115,19 @@ export async function POST(req: NextRequest) {
       name: user.name,
     },
   });
+  var csrf = await CSRF();
 
-  // ست کوکی
   response.cookies.set("token", token, {
     httpOnly: true,
     path: "/",
     maxAge: 60 * 60 * 2,
   });
-
+  response.cookies.set({
+    name: "csrf",
+    value: csrf,
+    maxAge: 60 * 60 * 2, // 2 ساعت
+    path: "/",
+    httpOnly: true,
+  });
   return response;
 }
