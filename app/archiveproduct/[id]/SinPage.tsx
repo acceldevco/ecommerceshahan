@@ -325,11 +325,11 @@ export default function SingleProductPage() {
                     // ringColor: colorPalette.primaryLight,
                   }}
                 >
-                  <img
+                  {/* <img
                     src={image}
                     alt={`${product.name} - تصویر ${index + 1}`}
                     className="w-full h-full object-cover"
-                  />
+                  /> */}
                 </button>
               ))}
             </div>
@@ -414,13 +414,13 @@ export default function SingleProductPage() {
                   </div>
                 )}
               </div>
-              <div
+              {/* <div
                 className="font-medium"
                 style={{ color: colorPalette.primaryDark }}
               >
                 شما {formatPrice(product.originalPrice - product.price)}{" "}
                 صرفه‌جویی می‌کنید
-              </div>
+              </div> */}
             </div>
 
             {/* Color Selection */}
