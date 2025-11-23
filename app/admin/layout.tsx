@@ -23,7 +23,7 @@ import UserForm from "../components/UserForm";
 import { usePathname } from "next/navigation";
 
 const Layout = ({ children }: any) => {
- 
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const pathname = usePathname();
@@ -47,7 +47,7 @@ const Layout = ({ children }: any) => {
 
   return (
     <div className="min-h-screen bg-gray-50 relative" dir="rtl">
-     
+
       {mobileSidebarOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
@@ -55,7 +55,7 @@ const Layout = ({ children }: any) => {
         />
       )}
 
-      
+
       <aside
         className={`
           fixed right-0 top-0 h-full bg-[#B7B89F] text-white z-50
@@ -64,10 +64,10 @@ const Layout = ({ children }: any) => {
           lg:${sidebarOpen ? "w-64" : "w-20"}
           overflow-hidden
         `}
-        
+
       >
         <div className="p-4 lg:p-6 h-full flex flex-col">
-      
+
           <div className="flex items-center justify-between mb-8">
             <h1
               className={`text-xl font-bold transition-all
@@ -77,7 +77,7 @@ const Layout = ({ children }: any) => {
               فروشگاه شاهان
             </h1>
 
-         
+
             <button
               onClick={() => {
                 setMobileSidebarOpen(false);
@@ -102,11 +102,10 @@ const Layout = ({ children }: any) => {
           flex items-center
           gap-3 px-3 py-3 rounded-lg transition-all
           ${active ? "bg-white/20 shadow-lg" : "hover:bg-white/10"}
-          ${
-            !sidebarOpen && !mobileSidebarOpen
-              ? "lg:justify-center lg:px-3"
-              : ""
-          }
+          ${!sidebarOpen && !mobileSidebarOpen
+                      ? "lg:justify-center lg:px-3"
+                      : ""
+                    }
         `}
                   title={!sidebarOpen && !mobileSidebarOpen ? item.label : ""}
                 >
@@ -129,8 +128,10 @@ const Layout = ({ children }: any) => {
           </nav>
         </div>
         <div className="flex justify-between p-2">
-          <a href="/admin/profile"><Settings/></a>
-          <div><LogOut /></div>
+          <a href="/admin/profile"><Settings /></a>
+          <a onClick={() => {
+            typeof window !== "undefined" ? localStorage.removeItem('user') : ""
+          }} href="/api/logout"><LogOut /></a>
         </div>
 
       </aside>
@@ -142,11 +143,11 @@ const Layout = ({ children }: any) => {
           ${sidebarOpen ? "lg:mr-64" : "lg:mr-0"}
         `}
       >
-       
+
         <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
           <div className="px-4 py-3 lg:px-6 lg:py-4 flex items-center justify-between">
             <div className="flex items-center gap-3 lg:gap-4">
-           
+
               <button
                 onClick={() => {
                   if (window.innerWidth < 1024) {
@@ -160,7 +161,7 @@ const Layout = ({ children }: any) => {
                 <Menu size={24} />
               </button>
 
-          
+
               {/* <div className="relative">
                 <Search
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -175,7 +176,7 @@ const Layout = ({ children }: any) => {
               </div> */}
             </div>
 
-         
+
             <div className="flex items-center gap-3 lg:gap-4">
               <button className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg">
                 <Bell size={20} />
@@ -185,26 +186,26 @@ const Layout = ({ children }: any) => {
               <div className="flex items-center gap-2 pr-2 lg:pr-4 border-r border-gray-200">
                 <div className="text-right hidden sm:block">
                   <p className="font-semibold text-gray-900 text-sm lg:text-base">
-                   {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.name : ""}
+                    {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.name : ""}
                   </p>
                   <p className="text-xs lg:text-sm text-gray-500">
                     {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.email : ""}
                   </p>
                 </div>
                 <div className="w-8 h-8 lg:w-10 lg:h-10 bg-[#B7B89F] rounded-full flex items-center justify-center text-white font-bold">
-                 {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.name[0] : ""}
+                  {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.name[0] : ""}
                 </div>
               </div>
             </div>
           </div>
         </header>
 
-   
+
         <div className="p-4 lg:p-6">
-          
+
           {children}
-          
-          </div>
+
+        </div>
 
 
         <ui.DrawerComponent id="edituser">
@@ -226,7 +227,7 @@ const Layout = ({ children }: any) => {
           )}
         </ui.DrawerComponent>
 
-    
+
         <ui.DrawerComponent id="showimage">
           {(data: any) => (
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-[999999]">
@@ -236,7 +237,7 @@ const Layout = ({ children }: any) => {
               >
                 <ImageManagerPanel
                   onClose={() => ui.close("showimage")}
-                  onImageToggle={() => {}}
+                  onImageToggle={() => { }}
                   isOpen={true}
                   mode="dialog"
                 />
