@@ -1666,7 +1666,7 @@ const NestedCategoryCheckbox = ({
           )}
 
           <div className="flex items-center flex-1 gap-2">
-            {category.imageUrl && <img width={40} height={40} src={category.imageUrl} alt={category.name}  />}
+         {category.imageUrl && showcnt &&<img width={40} height={40} src={category.imageUrl} alt={category.name}  />}
 
             <input
               type="checkbox"
