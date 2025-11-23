@@ -1,5 +1,5 @@
 "use client";
-import { CarrotIcon, Search } from "lucide-react";
+import { CarrotIcon, Search, User } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useLoading } from "../hook/loadingData";
 import SimpleBeautifulSearch from "./SimpleBeautifulSearch";
@@ -638,7 +638,7 @@ const UserProfile: any = () => (
     </div>
 
     {/* Profile Avatar */}
-    {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.email?<div className="w-10 h-10 overflow-hidden rounded-xl bg-gradient-to-br from-[#B7B89F] to-[#8a8b7a] border border-[#B7B89F]/50 shadow cursor-pointer hover:shadow-md transition-all duration-200" />:"" : ""}
+    {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.email?<div className="w-10 h-10 overflow-hidden rounded-xl bg-gradient-to-br from-[#B7B89F] to-[#8a8b7a] border border-[#B7B89F]/50 shadow cursor-pointer hover:shadow-md transition-all duration-200" />:<a href="/auth"><User className="text-[#5a5b4a]"/></a> : ""}
     
   </a>
 );
