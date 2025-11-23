@@ -34,7 +34,7 @@
 //     setValue,
 //   }:any = useForm({
 //     defaultValues: {
-//       fullName: "",
+//       name: "",
 //       phone: "",
 //       email: "",
 //       address: "",
@@ -126,7 +126,7 @@
 //                     </label>
 //                     <input
 //                       type="text"
-//                       {...register("fullName", {
+//                       {...register("name", {
 //                         required: "نام و نام خانوادگی الزامی است",
 //                         minLength: {
 //                           value: 3,
@@ -136,9 +136,9 @@
 //                       className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:border-[#B7B89F] focus:ring-4 focus:ring-[#B7B89F]/10 outline-none transition-all"
 //                       placeholder="نام کامل خود را وارد کنید"
 //                     />
-//                     {errors.fullName && (
+//                     {errors.name && (
 //                       <p className="text-red-500 text-sm mt-1">
-//                         {errors.fullName.message}
+//                         {errors.name.message}
 //                       </p>
 //                     )}
 //                   </div>
@@ -554,15 +554,15 @@ const LocationPicker = dynamic(
     formState: { errors },
   } = useForm({
     defaultValues: {
-      fullName: "",
+      name: "",
       phone: "",
       email: "",
       address: "",
       lat: "",
       lng: "",
-      postalCode: "",
-      paymentMethod: "card",
-      deliveryMethod: "standard",
+      // postalCode: "",
+      // paymentMethod: "card",
+      // deliveryMethod: "standard",
     },
   });
 
@@ -576,7 +576,8 @@ const LocationPicker = dynamic(
     //   })),
     // });
    await axios.post("/api/order",{
-      ...data,
+    userData:{...data},
+      
       userId: 1,
       items: Object.values(cart).map((d: any) => ({
         productId: d.id,
@@ -590,7 +591,7 @@ var [maps, setmap]:any = useStorage("location", {});
     setValue("address", maps.address || "");
     setValue("lat", maps.lat || "");
     setValue("lng", maps.lng || "");
-    setValue("postalCode", maps.postcode || "");
+    // setValue("postalCode", maps.postcode || "");
   }, [maps, setmap]);
 
   // محاسبه قیمت کل سبد خرید
@@ -641,14 +642,14 @@ var [maps, setmap]:any = useStorage("location", {});
                   <h2 className="text-xl font-bold text-white">اطلاعات شخصی</h2>
                 </div>
                 <div className="p-6 space-y-5">
-                  <div>
+                  {/* <div>
                     <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                       <User className="w-4 h-4 text-[#B7B89F]" /> نام و نام
                       خانوادگی *
                     </label>
                     <input
                       type="text"
-                      {...register("fullName", {
+                      {...register("name", {
                         required: "نام و نام خانوادگی الزامی است",
                         minLength: {
                           value: 3,
@@ -658,14 +659,37 @@ var [maps, setmap]:any = useStorage("location", {});
                       className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:border-[#B7B89F] focus:ring-4 focus:ring-[#B7B89F]/10 outline-none transition-all"
                       placeholder="نام کامل خود را وارد کنید"
                     />
-                    {errors.fullName && (
+                    {errors.name && (
                       <p className="text-red-500 text-sm mt-1">
-                        {errors.fullName.message}
+                        {errors.name.message}
+                      </p>
+                    )}
+                  </div> */}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                      <div>
+                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                      <User className="w-4 h-4 text-[#B7B89F]" /> نام و نام
+                      خانوادگی *
+                    </label>
+                    <input
+                      type="text"
+                      {...register("name", {
+                        required: "نام و نام خانوادگی الزامی است",
+                        minLength: {
+                          value: 3,
+                          message: "نام باید حداقل ۳ کاراکتر باشد",
+                        },
+                      })}
+                      className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:border-[#B7B89F] focus:ring-4 focus:ring-[#B7B89F]/10 outline-none transition-all"
+                      placeholder="نام کامل خود را وارد کنید"
+                    />
+                    {errors.name && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.name.message}
                       </p>
                     )}
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                       <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                         <Phone className="w-4 h-4 text-[#B7B89F]" /> شماره تماس
@@ -689,7 +713,7 @@ var [maps, setmap]:any = useStorage("location", {});
                         </p>
                       )}
                     </div>
-                    <div>
+                    {/* <div>
                       <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                         <Mail className="w-4 h-4 text-[#B7B89F]" /> ایمیل
                       </label>
@@ -709,7 +733,7 @@ var [maps, setmap]:any = useStorage("location", {});
                           {errors.email.message}
                         </p>
                       )}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -752,7 +776,7 @@ var [maps, setmap]:any = useStorage("location", {});
                     )}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <div>
+                    {/* <div>
                       <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                         کد پستی *
                       </label>
@@ -774,7 +798,7 @@ var [maps, setmap]:any = useStorage("location", {});
                           {errors.postalCode.message}
                         </p>
                       )}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

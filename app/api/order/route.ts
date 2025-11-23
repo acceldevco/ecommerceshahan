@@ -135,6 +135,8 @@ export async function POST(req: Request) {
         include: { items: true },
       });
 
+      console.log('userData',userData);
+      
       // آپدیت اطلاعات کاربر بر اساس payload
       await tx.user.update({
         where: { id: userId },

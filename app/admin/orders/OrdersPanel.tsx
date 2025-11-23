@@ -695,6 +695,7 @@ export default function OrdersPanel() {
             ""
           )}
         </div>
+        {/* {JSON.stringify(data)} */}
       </div>
     </div>
   );
