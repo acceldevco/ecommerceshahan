@@ -65,7 +65,7 @@ export default function AuthPage() {
               }).catch(() => {
                 alert('این کاربر قبلا ثبت نام کرده است')
               })
-        localStorage.user = JSON.stringify(datas.data.user)
+        localStorage.user = JSON.stringify(datas?.data?.user)
         router.push('/')
         // console.log(datas.data.user);
 
