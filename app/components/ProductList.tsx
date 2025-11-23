@@ -200,7 +200,7 @@ export default function ProductList({
         </div>
         {/* Products Slider */}
         <>
-          <div className="flex overflow-x-auto gap-4 py-4 px-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+          <div className="flex overflow-hidden gap-4 py-4 px-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
             {products.map((product) => (
               <div
                 key={product.id}
