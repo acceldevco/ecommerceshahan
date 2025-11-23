@@ -193,7 +193,7 @@ const Layout = ({ children }: any) => {
                   </p>
                 </div>
                 <div className="w-8 h-8 lg:w-10 lg:h-10 bg-[#B7B89F] rounded-full flex items-center justify-center text-white font-bold">
-                  {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.name[0] : ""}
+                  {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.name?.[0] : ""}
                 </div>
               </div>
             </div>

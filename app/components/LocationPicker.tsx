@@ -119,11 +119,14 @@ export default function LocationPicker({
   exportlocation,
   defaultLocation,
 }: any) {
-  var [map, setmap] = useStorage("location", {});
+  var [map, setmap] = useStorage("location", {
+
+    lat: 35.6892,
+    lng: 51.3890,
+  });
   const [location, setLocation] = useState<any>({
     ...map,
-     lat: 35.6892,
-    lng: 51.3890,
+
   });
 
   // --- مقداردهی اولیه اگر defaultLocation وجود داشته باشد ---

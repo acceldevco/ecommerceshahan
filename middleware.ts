@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyToken } from "./utils/jwt";
@@ -6,9 +5,6 @@ import { verifyToken } from "./utils/jwt";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("token")?.value;
-
-
-
 
   //   const referer = request.headers.get("referer");
   // const allowedOrigins = ["http://localhost:3000"];
@@ -40,10 +36,10 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
+  function checkout() {}
+  const forbiddenPaths = ["/checkout", "/api"];
   // 4) قوانین دسترسی بر اساس نقش
   if (role === "CUSTOMER") {
-    const forbiddenPaths = ["/checkout", "/api"];
-
     if (
       !pathname.startsWith("/user") &&
       !forbiddenPaths.some((p) => pathname.startsWith(p))
@@ -51,7 +47,10 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   } else if (role === "ADMIN") {
-    if (!pathname.startsWith("/admin")) {
+    if (
+      !pathname.startsWith("/admin") &&
+      !forbiddenPaths.some((p) => pathname.startsWith(p))
+    ) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }

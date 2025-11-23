@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function AuthPage() {
   const [authMode, setAuthMode]: any = useState("login"); // 'login', 'register', 'forgot-password'
@@ -18,7 +19,7 @@ export default function AuthPage() {
     reset,
     getValues,
   }: any = useForm();
-
+  var router = useRouter()
   const password = watch("password");
 
   const onSubmit = async (data: any) => {
@@ -45,6 +46,8 @@ export default function AuthPage() {
                 lastName: data.lastName,
                 email: data.email,
                 password: data.password,
+              }).catch(() => {
+                alert('خطا در تایید اعتبار')
               })
             :
             // await axios.post(
@@ -59,8 +62,11 @@ export default function AuthPage() {
                 lastName: data.lastName,
                 email: data.email,
                 password: data.password,
+              }).catch(() => {
+                alert('این کاربر قبلا ثبت نام کرده است')
               })
         localStorage.user = JSON.stringify(datas.data.user)
+        router.push('/')
         // console.log(datas.data.user);
 
         // .then((d) => {
