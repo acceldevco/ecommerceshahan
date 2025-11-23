@@ -1443,7 +1443,7 @@ const NestedCategoryCheckbox = ({
         imageUrl: imageUrl?.[0]?.url,
       },
       id: id,
-    }).then((d) => {
+    }).then((d:any) => {
       setimgcat(imageUrl)
       // setValue("imageUrl", imageUrl?.[0]?.url);
       setDialog(false);
