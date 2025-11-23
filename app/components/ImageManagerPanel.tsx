@@ -26,8 +26,9 @@ const ImageManagerPanel: any = ({
   onImageSelect = () => {},
   onImageToggle = () => {}, // 👈 جدید
   mode = "standalone",
-}:any) => {
-  const { data, loading, error }:any = {}
+  files = {},
+}: any) => {
+  const { data, loading, error, loadMore, hasMore }: any = files; //{}
   //  useLoading({
   //   url: "/api/getdata",
   //   submitUrl: "/api/main",
@@ -48,19 +49,19 @@ const ImageManagerPanel: any = ({
   const [searchTerm, setSearchTerm] = useState("");
   // console.log('JSON:',JSON.parse(localStorage.image ?? `[]`));
 
-  const [selectedImages, setSelectedImages]:any = useState([]);
-  const [filterFavorite, setFilterFavorite]:any = useState(false);
-  const [selectedImage, setSelectedImage]:any = useState(null);
-  const [isUploading, setIsUploading]:any = useState(false);
-  const fileInputRef:any = useRef(null);
-  const dialogRef:any = useRef(null);
+  const [selectedImages, setSelectedImages]: any = useState([]);
+  const [filterFavorite, setFilterFavorite]: any = useState(false);
+  const [selectedImage, setSelectedImage]: any = useState(null);
+  const [isUploading, setIsUploading]: any = useState(false);
+  const fileInputRef: any = useRef(null);
+  const dialogRef: any = useRef(null);
   const [image, saveImages] = useStorage("image", []);
   useEffect(() => {
     // console.log('image',localStorage.getItem("image"));
 
     try {
       const data = image; //JSON.parse(localStorage.getItem("image") || "[]");
-      const ids:any = data.map((item:any) => item.id);
+      const ids: any = data.map((item: any) => item.id);
       if (ids) setSelectedImages(ids);
     } catch {
       setSelectedImages([]);
@@ -69,7 +70,7 @@ const ImageManagerPanel: any = ({
 
   // مدیریت کلیک خارج از دیالوگ
   useEffect(() => {
-    const handleClickOutside = (event:any) => {
+    const handleClickOutside = (event: any) => {
       if (
         mode === "dialog" &&
         dialogRef.current &&
@@ -93,7 +94,7 @@ const ImageManagerPanel: any = ({
 
   // مدیریت کلید Escape
   useEffect(() => {
-    const handleEscape = (event:any) => {
+    const handleEscape = (event: any) => {
       if (event.key === "Escape") {
         if (selectedImage) {
           setSelectedImage(null);
@@ -109,17 +110,17 @@ const ImageManagerPanel: any = ({
     };
   }, [selectedImage, mode, onClose]);
 
-  const toggleFavorite = (id:any) => {
+  const toggleFavorite = (id: any) => {
     setImages(
-      images.map((img:any) =>
+      images.map((img: any) =>
         img.id === id ? { ...img, favorite: !img.favorite } : img
       )
     );
   };
 
-  const deleteImage = (id:any) => {
-    setImages(images.filter((img:any) => img.id !== id));
-    setSelectedImages(selectedImages.filter((imgId:any) => imgId !== id));
+  const deleteImage = (id: any) => {
+    setImages(images.filter((img: any) => img.id !== id));
+    setSelectedImages(selectedImages.filter((imgId: any) => imgId !== id));
   };
 
   //   const toggleSelectImage = (id) => {
@@ -169,13 +170,15 @@ const ImageManagerPanel: any = ({
   // };
 
   const toggleSelectImage = (id: number) => {
-    setSelectedImages((prev:any) => {
-      console.log('prev',prev);
-      
+    setSelectedImages((prev: any) => {
+      console.log("prev", prev);
+
       const alreadySelected = prev.includes(id);
       const newSelected = alreadySelected
-        ? prev.filter((i:any) => i !== id)
-        : radio?[id]: [...prev, id];
+        ? prev.filter((i: any) => i !== id)
+        : radio
+        ? [id]
+        : [...prev, id];
       console.log(context);
 
       // ✅ داده‌ها حالا از context گرفته می‌شوند
@@ -184,12 +187,12 @@ const ImageManagerPanel: any = ({
       // const allImages = context.data?.imageadmin || images; // فُال‌بک اگر context خالی بود
       // console.log(allImages);
 
-      const selectedData: any = allImages.filter((img:any) =>
+      const selectedData: any = allImages.filter((img: any) =>
         newSelected.includes(img.id)
       );
 
       // console.log('selectedData',selectedData);
-      
+
       // 👇 ارسال داده‌ها به بیرون (prop)
       saveImages(selectedData);
       // localStorage.image = JSON.stringify(selectedData);
@@ -204,8 +207,8 @@ const ImageManagerPanel: any = ({
     });
   };
 
-  const handleFileUpload = async (e:any) => {
-    const files:any = Array.from(e.target.files);
+  const handleFileUpload = async (e: any) => {
+    const files: any = Array.from(e.target.files);
     if (files.length === 0) return;
 
     setIsUploading(true);
@@ -257,7 +260,7 @@ const ImageManagerPanel: any = ({
     }
   };
 
-  const handleImageSelect = (img:any) => {
+  const handleImageSelect = (img: any) => {
     if (mode === "dialog") {
       onImageSelect(img);
       onClose();
@@ -268,10 +271,10 @@ const ImageManagerPanel: any = ({
     onImageSelect(img);
   };
 
-  const filteredImages = images.filter((img:any) => {
+  const filteredImages = images.filter((img: any) => {
     const matchesSearch =
       img.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      img.tags.some((tag:any) => tag.includes(searchTerm));
+      img.tags.some((tag: any) => tag.includes(searchTerm));
     const matchesFavorite = !filterFavorite || img.favorite;
     return matchesSearch && matchesFavorite;
   });
@@ -407,7 +410,7 @@ const ImageManagerPanel: any = ({
               </span>
               <button
                 onClick={() => {
-                  selectedImages.forEach((id:any) => deleteImage(id));
+                  selectedImages.forEach((id: any) => deleteImage(id));
                   setSelectedImages([]);
                 }}
                 className="text-red-600 hover:text-red-700 font-medium flex items-center gap-1"
@@ -433,81 +436,81 @@ const ImageManagerPanel: any = ({
             <p className="text-slate-500">تصویری برای نمایش وجود ندارد</p>
           </div>
         ) : viewMode === "grid" ? (
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {filteredImages.map((img:any) => (
-              <div
-                key={img.id}
-                className="group relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-200"
-              >
-              
-                <div className="relative aspect-square overflow-hidden bg-slate-100">
-                  <img
-                    src={img.url}
-                    alt={img.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+          <div className="flex flex-col">
+            <div className="flex flex-wrap gap-4 ">
+              {filteredImages.map((img: any) => (
+                <div
+                  key={img.id}
+                  className="flex-[1_1_calc(20%-16px)] min-w-[180px] max-w-[240px] hover:shadow-lg transition-all duration-300 border border-slate-200"
+                  // className="group relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-200"
+                >
+                  <div className="relative aspect-square overflow-hidden bg-slate-100 ">
+                    <img
+                      src={img.url}
+                      alt={img.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
 
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <div className="absolute top-2 right-2 flex gap-1.5">
-                      <button
-                        onClick={() => toggleSelectImage(img.id)}
-                        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all shadow ${
-                          selectedImages.includes(img.id)
-                            ? "bg-blue-500 text-white"
-                            : "bg-white/95 text-slate-700 hover:bg-white"
-                        }`}
-                      >
-                        
-                        {/* {JSON.stringify(img.id)} */}
-                        <span className="text-xs font-bold">
-                          {selectedImages.includes(img.id) ? "✓" : "+"}
-                        </span>
-                      </button>
-                      <button
-                        onClick={() => toggleFavorite(img.id)}
-                        className="w-7 h-7 bg-white/95 hover:bg-white rounded-lg flex items-center justify-center transition-all shadow"
-                      >
-                        <Star
-                          className={`w-3.5 h-3.5 ${
-                            img.favorite
-                              ? "fill-yellow-400 text-yellow-400"
-                              : "text-slate-600"
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <div className="absolute top-2 right-2 flex gap-1.5">
+                        <button
+                          onClick={() => toggleSelectImage(img.id)}
+                          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all shadow ${
+                            selectedImages.includes(img.id)
+                              ? "bg-blue-500 text-white"
+                              : "bg-white/95 text-slate-700 hover:bg-white"
                           }`}
-                        />
-                      </button>
-                    </div>
+                        >
+                          {/* {JSON.stringify(img.id)} */}
+                          <span className="text-xs font-bold">
+                            {selectedImages.includes(img.id) ? "✓" : "+"}
+                          </span>
+                        </button>
+                        <button
+                          onClick={() => toggleFavorite(img.id)}
+                          className="w-7 h-7 bg-white/95 hover:bg-white rounded-lg flex items-center justify-center transition-all shadow"
+                        >
+                          <Star
+                            className={`w-3.5 h-3.5 ${
+                              img.favorite
+                                ? "fill-yellow-400 text-yellow-400"
+                                : "text-slate-600"
+                            }`}
+                          />
+                        </button>
+                      </div>
 
-                    <div className="absolute bottom-0 left-0 right-0 p-2 flex gap-1.5">
-                      <button
-                        onClick={() => handleImageSelect(img)}
-                        className="flex-1 bg-white/95 hover:bg-white text-slate-700 px-2 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 text-xs font-semibold shadow"
-                      >
-                        <Eye className="w-3.5 h-3.5" />
-                        {mode === "dialog" ? "انتخاب" : "مشاهده"}
-                      </button>
-                      <button
-                        onClick={() => deleteImage(img.id)}
-                        className="bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-lg transition-all shadow"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      <div className="absolute bottom-0 left-0 right-0 p-2 flex gap-1.5">
+                        <button
+                          onClick={() => handleImageSelect(img)}
+                          className="flex-1 bg-white/95 hover:bg-white text-slate-700 px-2 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 text-xs font-semibold shadow"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                          {mode === "dialog" ? "انتخاب" : "مشاهده"}
+                        </button>
+                        <button
+                          onClick={() => deleteImage(img.id)}
+                          className="bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-lg transition-all shadow"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="p-3">
-                  <h3 className="font-semibold text-slate-800 text-sm mb-1.5 truncate">
-                    {img.title}
-                  </h3>
-                  <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-                    <span className="flex items-center gap-0.5">
-                      <Calendar className="w-3 h-3" />
-                      {img.date}
-                    </span>
-                    <span className="font-medium">{img.size}</span>
-                  </div>
-                  {/* <div className="flex flex-wrap gap-1">
+                  <div className="p-3">
+                    <h3 className="font-semibold text-slate-800 text-sm mb-1.5 truncate">
+                      {img.title}
+                    </h3>
+                    <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
+                      <span className="flex items-center gap-0.5">
+                        <Calendar className="w-3 h-3" />
+                        {img.date}
+                      </span>
+                      <span className="font-medium">{img.size}</span>
+                    </div>
+                    {/* <div className="flex flex-wrap gap-1">
                     {img.tags.slice(0, 2).map((tag, i) => (
                       <span
                         key={i}
@@ -517,14 +520,24 @@ const ImageManagerPanel: any = ({
                       </span>
                     ))}
                   </div> */}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            {hasMore && (
+              <button
+                className="bg-[#b7b89e] w-[20%] m-2 self-center text-xl text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl  "
+                onClick={() => {
+                  loadMore();
+                }}
+              >
+                +
+              </button>
+            )}
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-            
-            {filteredImages.map((img:any, index:any) => (
+            {filteredImages.map((img: any, index: any) => (
               <div
                 key={img.id}
                 className={`flex items-center gap-4 p-4 hover:bg-slate-50 transition-colors ${
@@ -533,7 +546,6 @@ const ImageManagerPanel: any = ({
                     : ""
                 }`}
               >
-                
                 <input
                   // type="checkbox"
                   // type="radio"
@@ -559,7 +571,7 @@ const ImageManagerPanel: any = ({
                     <span>{img.size}</span>
                   </div>
                   <div className="flex flex-wrap gap-1 mt-2">
-                    {img.tags.map((tag:any, i:any) => (
+                    {img.tags.map((tag: any, i: any) => (
                       <span
                         key={i}
                         className="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded"
@@ -619,7 +631,6 @@ const ImageManagerPanel: any = ({
             className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4 animate-fadeIn"
             onClick={() => setSelectedImage(null)}
           >
-            
             <div
               className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-auto animate-scaleIn"
               onClick={(e) => e.stopPropagation()}
@@ -628,7 +639,6 @@ const ImageManagerPanel: any = ({
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-bold text-slate-800">
                     {selectedImage.title}
-                
                   </h2>
                   <button
                     onClick={() => setSelectedImage(null)}
@@ -650,7 +660,7 @@ const ImageManagerPanel: any = ({
                       <h3 className="font-semibold text-slate-700 mb-2">
                         اطلاعات تصویر
                       </h3>
-                     
+
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span className="text-slate-500">تاریخ:</span>

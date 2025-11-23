@@ -9,6 +9,8 @@ export function signToken(payload: object, expiresIn:any = "1h") {
 
 export function verifyToken(token: string) {
   try {
+    console.log(JWT_SECRET);
+    
     return jwt.verify(token, JWT_SECRET);
   } catch (error) {
     return null;

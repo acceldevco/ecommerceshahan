@@ -29,6 +29,19 @@ export default function LandingPage({children}:any) {
     },
   });
 
+
+
+
+
+    const { data: banner } = useLoading({
+    url: "/api/getdata",
+    initialData: {
+      table: "banner",
+      pageSize:10
+      // page: 1,
+      // filters: { include: { categories: true, files: true } },
+    },
+  });
   const sampleSlides = [
     {
       id: 1,
@@ -150,9 +163,10 @@ export default function LandingPage({children}:any) {
         className="p-2"
         // className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start"
       >
+        {/* {JSON.stringify(banner?.data?.filter((d)=>d.position === 'TOP'))} */}
         <div className="mb-5">
         <ImageSlider
-          slides={sampleSlides}
+          slides={banner?.data?.filter((d:any)=>d.position === 'TOP') ?? []}
           autoPlay={true}
           autoPlayInterval={4000}
           showThumbnails={true}
@@ -174,7 +188,13 @@ export default function LandingPage({children}:any) {
           variant="gradient"
         />
 
-        <ListPosts />
+
+        <ProductList
+          title="لیست جدید ترین محصولات "
+          products={data?.data ?? []}
+          backgroundImage="/frame-64.jpeg"
+        />
+        {/* <ListPosts /> */}
         {/* <Card /> */}
       </main>
     </div>

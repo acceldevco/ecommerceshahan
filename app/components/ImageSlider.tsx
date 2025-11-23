@@ -25,7 +25,7 @@ export default function ImageSlider({
   showThumbnails = true,
   showArrows = true,
   showDots = true,
-}: ImageSliderProps) {
+}: any) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPlaying, setIsPlaying] = useState(autoPlay);
 
@@ -79,18 +79,21 @@ export default function ImageSlider({
         ))}
       </div> */}
       <div className="relative h-[100%] p-50">
-        {slides.map((slide, index) => (
+        {slides.map((slide: any, index: any) => (
           <div
             key={slide.id}
             className={`absolute inset-0  duration-500 ease-in-out ${
               index === currentSlide ? "opacity-100" : "opacity-0"
             }`}
           >
-            <img
-              src={slide.image}
-              alt={slide.alt || `Slide ${slide.id}`}
-              className="w-full h-full"
-            />
+            <a href={slide.link}>
+              {" "}
+              <img
+                src={slide.image ?? slide?.imageUrl}
+                alt={slide.alt || `Slide ${slide.id}`}
+                className="w-full h-full"
+              />
+            </a>
           </div>
         ))}
       </div>
@@ -160,7 +163,7 @@ export default function ImageSlider({
       {/* Thumbnails */}
       {showThumbnails && slides.length > 1 && (
         <div className="absolute right-4 top-[20%] transform -translate-y-1/2 flex flex-col items-center overflow-hidden gap-3 px-2 py-4 rounded-[35px] bg-[#c3c4af]/20 backdrop-blur-sm shadow-xl z-10">
-          {slides.map((slide, index) => (
+          {slides.map((slide: any, index: any) => (
             <button
               key={slide.id}
               onClick={() => goToSlide(index)}
@@ -171,7 +174,7 @@ export default function ImageSlider({
               }`}
             >
               <img
-                src={slide.image}
+                 src={slide.image ?? slide?.imageUrl}
                 alt={`Thumbnail ${slide.id}`}
                 className="w-full h-full object-cover"
               />

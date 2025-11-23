@@ -88,7 +88,7 @@ model File {
 
 model User {
   id        Int      @id @default(autoincrement())
-  name      String
+  name      String?
   email     String   @unique
   phone     String?
   address   String?
@@ -98,6 +98,7 @@ model User {
   lat       Decimal? @db.Decimal(10, 8)
   lng       Decimal? @db.Decimal(11, 8)
   storeId   Int?
+  verified  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   cart      Cart?

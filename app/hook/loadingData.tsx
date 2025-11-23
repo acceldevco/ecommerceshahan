@@ -352,6 +352,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
 import { useSearchParams, useRouter } from "next/navigation";
+import CryptoJS from "crypto-js";
 
 export function useLoading({
   initialData = {},
@@ -363,7 +364,7 @@ export function useLoading({
 }: any) {
   const search = useSearchParams();
   const router = useRouter();
-
+  const SECRET = "admin";
   const currentPage = Number(search.get("page") ?? initialData?.pageSize ?? 1);
   // console.log('currentPage',currentPage);
   initialData.pageSize = currentPage;
@@ -384,8 +385,12 @@ export function useLoading({
   const fetchSingle = useCallback(
     async (append = false, payload?: any) => {
       if (!url) return;
+      const encrypted = CryptoJS.AES.encrypt(
+        JSON.stringify(payload),
+        SECRET
+      ).toString();
 
-      const res = await axios.post(url, payload);
+      const res = await axios.post(url, {data: encrypted});
       const items = res.data.items || res.data;
 
       if (append && Array.isArray(data?.data)) {
@@ -476,10 +481,14 @@ export function useLoading({
         setLoading(true);
         setError(null);
 
+        const encrypted = CryptoJS.AES.encrypt(
+          JSON.stringify(payload),
+          SECRET
+        ).toString();
         const res = await axios({
           url: submitEndpoint,
           method: options.method || "POST",
-          data: payload,
+          data: {data:encrypted}//payload,
         });
 
         if (options.refetch !== false) {

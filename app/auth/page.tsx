@@ -31,25 +31,32 @@ export default function AuthPage() {
         setEmailSent(true);
         console.log("Reset password email sent to:", data.email);
       } else {
-        var datas=authMode === "login"
-          ? await axios.post("api/auth/login", {
-              email: data.email,
-              password: data.password,
-            })
-          : // "register"
-            await axios
-              .post("api/auth/signup", {
-                name: data.firstName,
-                // lastName: data.lastName,
-                email: data.email,
-                password: data.password,
-              })
-            localStorage.user = JSON.stringify(datas.data.user)
-            // console.log(datas.data.user);
-              
-              // .then((d) => {
-              //   console.log('test',d);
-              // });
+var datas =
+  authMode === "login"
+    ? await axios.post(
+        "/api/sendverify",
+        { ...data },
+        { withCredentials: true }   // ⬅⬅ مهم‌ترین قسمت!
+      )
+    : await axios.post(
+        "/api/sendverify",
+        { ...data },
+        { withCredentials: true }   // ⬅⬅ این هم
+      );
+
+        // await axios
+        //   .post("api/auth/signup", {
+        //     name: data.firstName,
+        //     // lastName: data.lastName,
+        //     email: data.email,
+        //     password: data.password,
+        //   })
+        localStorage.user = JSON.stringify(datas.data.user)
+        // console.log(datas.data.user);
+
+        // .then((d) => {
+        //   console.log('test',d);
+        // });
         // console.log(
         //   `${
 
@@ -155,6 +162,8 @@ export default function AuthPage() {
         )}
       </div>
 
+      
+
       <div>
         <label
           htmlFor="password"
@@ -209,28 +218,28 @@ export default function AuthPage() {
 
   const renderRegisterForm = () => (
     <>
-            <div>
-          <label
-            htmlFor="firstName"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            نام و نام خانوادگی
-          </label>
-          <input
-            id="firstName"
-            type="text"
-            {...register("firstName", {
-              required: "نام الزامی است",
-            })}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b7b89e] focus:border-[#b7b89e] transition-all duration-200 outline-none"
-            placeholder="نام خود را وارد کنید"
-          />
-          {errors.firstName && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.firstName.message}
-            </p>
-          )}
-        </div>
+      <div>
+        <label
+          htmlFor="firstName"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          نام و نام خانوادگی
+        </label>
+        <input
+          id="firstName"
+          type="text"
+          {...register("firstName", {
+            required: "نام الزامی است",
+          })}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b7b89e] focus:border-[#b7b89e] transition-all duration-200 outline-none"
+          placeholder="نام خود را وارد کنید"
+        />
+        {errors.firstName && (
+          <p className="mt-1 text-sm text-red-600">
+            {errors.firstName.message}
+          </p>
+        )}
+      </div>
 
       <div>
         <label

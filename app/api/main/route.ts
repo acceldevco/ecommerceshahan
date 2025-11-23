@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/prisma"; // مسیر به Prisma Client شما
-
+import CryptoJS from "crypto-js";
 // لیست جداول مجاز
 const tables = [
   "store",
@@ -13,11 +13,11 @@ const tables = [
   "cartitem",
   "order",
   "orderitem",
-  "banner"
+  "banner",
 ] as const;
 
 type T = (typeof tables)[number];
-
+const SECRET = process.env.SECRET!;
 // فیلدهای مجاز هر جدول
 const whitelist: any = {
   store: ["name", "currency"],
@@ -32,7 +32,7 @@ const whitelist: any = {
     "categoryId",
     "storeId",
     "categories",
-    "files"
+    "files",
   ],
   file: ["title", "url", "size", "categoryId", "subcategoryId", "productId"],
   user: ["name", "email", "phone", "address", "role", "storeId"],
@@ -40,21 +40,27 @@ const whitelist: any = {
   cartitem: ["cartId", "productId", "quantity", "unitPrice", "totalPrice"],
   order: ["userId", "storeId", "total", "status", "createdAt"],
   orderitem: ["orderId", "productId", "quantity", "unitPrice"],
-  banner:['id','title','file','position', "createdAt","isActive","imageUrl"]
+  banner: [
+    "id",
+    "title",
+    "file",
+    "position",
+    "createdAt",
+    "isActive",
+    "imageUrl",
+  ],
 };
 
 // فیلتر داده‌ها طبق whitelist
-const filter = (t: T, d: Record<string, any>) =>
-  {
-    // console.log('fdfdf',t,d,whitelist[t].includes(Object.keys(d)));
-    
-  return  Object.fromEntries(
+const filter = (t: T, d: Record<string, any>) => {
+  // console.log('fdfdf',t,d,whitelist[t].includes(Object.keys(d)));
+
+  return Object.fromEntries(
     Object.entries(d).filter(([k]) => {
-
-
-    return  whitelist[t].includes(k)
+      return whitelist[t].includes(k);
     })
-  )};
+  );
+};
 
 export async function POST(req: Request) {
   // prisma.banner.create({
@@ -98,6 +104,9 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
+    const bytes = CryptoJS.AES.decrypt(body.data, SECRET);
+    const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
     const {
       nameTable,
       action,
@@ -108,10 +117,10 @@ export async function POST(req: Request) {
       action: "create" | "update" | "delete";
       id?: string | number;
       data?: any;
-    } = body;
+    } = decrypted; // body;
 
     console.log(tables.includes(nameTable));
-    
+
     // اعتبارسنجی ورودی‌ها
     if (!nameTable || !tables.includes(nameTable)) {
       return NextResponse.json(
@@ -131,8 +140,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "مدل یافت نشد" }, { status: 500 });
     }
 
-    const safe =data ? filter(nameTable, data) : undefined;
-    console.log('safe',safe );
+    const safe = data ? filter(nameTable, data) : undefined;
+    console.log("safe", safe);
 
     let result;
     console.log(action);
@@ -148,17 +157,17 @@ export async function POST(req: Request) {
 
       case "update":
         if (!id)
-          
           return NextResponse.json(
             { error: "شناسه الزامی است" },
             { status: 400 }
           );
         if (
           // true
-          !safe || !Object.keys(safe).length
-      )
+          !safe ||
+          !Object.keys(safe).length
+        )
           // console.log('data',data);
-          
+
           return NextResponse.json(
             { error: "داده برای ویرایش الزامی است" },
             { status: 400 }

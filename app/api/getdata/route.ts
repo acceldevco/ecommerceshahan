@@ -1,8 +1,8 @@
 // app/api/getdata/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/prisma";
-
-
+import CryptoJS from "crypto-js";
+const SECRET = process.env.SECRET!;
 
 type TableName =
   | "store"
@@ -15,14 +15,17 @@ type TableName =
   | "cartitem"
   | "order"
   | "orderitem"
-  | "banner" | "review";
+  | "banner"
+  | "review";
 
 export async function POST(req: NextRequest) {
-
   try {
     const body = await req.json();
-    const params = body; 
-  
+    // console.log(body);
+    
+    const params = body.data;
+    const bytes = CryptoJS.AES.decrypt(params, "admin");
+    const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
     const {
       table,
@@ -30,7 +33,7 @@ export async function POST(req: NextRequest) {
       filters = {},
       page = 1,
       pageSize = 10,
-    } = params;
+    } = decrypted; // params;
 
     if (!table) {
       return NextResponse.json(
@@ -52,7 +55,7 @@ export async function POST(req: NextRequest) {
       order: prisma.order,
       orderitem: prisma.orderItem,
       banner: prisma.banner,
-      review:prisma.review
+      review: prisma.review,
     };
 
     const model = models[table.toLowerCase() as TableName];
@@ -79,7 +82,7 @@ export async function POST(req: NextRequest) {
     // const skip = (page - 1) * pageSize;
     const take = pageSize;
 
-    console.log('filters',take);
+    console.log("filters", take);
 
     const [data, total] = await Promise.all([
       model.findMany({

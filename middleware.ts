@@ -129,10 +129,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyToken } from "./utils/jwt";
-
+// import jwt from "jsonwebtoken";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get("token")?.value;
+  const token:any = request.cookies.get("token")?.value;
 
   const excludedPaths = ["/api/verify", "/api/sendverification", "/auth"];
 
@@ -140,58 +140,51 @@ export async function middleware(request: NextRequest) {
   if (excludedPaths.some((path) => pathname.startsWith(path))) {
     return NextResponse.next();
   }
+// console.log(token);
 
   // اگر توکن وجود ندارد → هدایت به login
-  // if (!token) {
-  //   return NextResponse.redirect(new URL("/auth", request.url));
-  // }
+  if (!token) {
+    return NextResponse.redirect(new URL("/auth", request.url));
+  }
 
-  // let role: string;
-  // try {
-  //   role = (verifyToken(token) as any).role;
-  // } catch (err) {
-  //   // توکن نامعتبر → حذف کوکی و ریدایرکت
-  //   const response = NextResponse.redirect(new URL("/auth", request.url));
-  //   response.cookies.delete("token");
-  //   return response;
-  // }
+  let role: string;
+      role = (verifyToken(token) as any).role;
+    // console.log('dasdasdasdad',role);
+  try {
 
-  // مسیرهای بر اساس نقش
-  //   if (role === "CUSTOMER") {
-  //     if (!pathname.startsWith("/user") || pathname.startsWith("/checkout")) {
-  //       return NextResponse.redirect(new URL("/", request.url));
-  //     }
-  //   } else if (role === "ADMIN") {
-  //     if (!pathname.startsWith("/admin")) {
-  //       return NextResponse.redirect(new URL("/", request.url));
-  //     }
-  //   } else {
-  //     // نقش ناشناخته → ریدایرکت به صفحه اصلی
-  //     return NextResponse.redirect(new URL("/", request.url));
-  //   }
+    
+  } catch (err) {
+    // توکن نامعتبر → حذف کوکی و ریدایرکت
+    const response = NextResponse.redirect(new URL("/auth", request.url));
+    response.cookies.delete("token");
+    return response;
+  }
+
+  // // مسیرهای بر اساس نقش
+
   ///////////////////////////////////
-  // if (role === "CUSTOMER") {
-  //   // مسیرهای غیرمجاز برای CUSTOMER
-  //   const forbiddenPaths = ["/checkout"
-  //     // , "/api"
-  //   ];
+  if (role === "CUSTOMER") {
+    // مسیرهای غیرمجاز برای CUSTOMER
+    const forbiddenPaths = ["/checkout"
+      , "/api"
+    ];
 
   //   // اگر مسیر با /user شروع نمی‌شود یا در مسیرهای ممنوع باشد → redirect
-  //   if (
-  //     !pathname.startsWith("/user") &&
-  //     !forbiddenPaths.some((p) => pathname.startsWith(p))
-  //   ) {
-  //     return NextResponse.redirect(new URL("/", request.url));
-  //   }
-  // } else if (role === "ADMIN") {
-  //   // فقط مسیرهای /admin مجاز
-  //   if (!pathname.startsWith("/admin")) {
-  //     return NextResponse.redirect(new URL("/", request.url));
-  //   }
-  // } else {
-  //   // نقش ناشناخته → ریدایرکت به صفحه اصلی
-  //   return NextResponse.redirect(new URL("/", request.url));
-  // }
+    if (
+      !pathname.startsWith("/user") &&
+      !forbiddenPaths.some((p) => pathname.startsWith(p))
+    ) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  } else if (role === "ADMIN") {
+    // فقط مسیرهای /admin مجاز
+    if (!pathname.startsWith("/admin")) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  } else {
+    // نقش ناشناخته → ریدایرکت به صفحه اصلی
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
   return NextResponse.next();
 }
