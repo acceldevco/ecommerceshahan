@@ -1,7 +1,8 @@
 // app/api/getdata/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/prisma";
-import CryptoJS from "crypto-js";
+import { decrypt } from "@/utils/crypto";
+
 const SECRET = process.env.SECRET!;
 
 type TableName =
@@ -22,10 +23,11 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     // console.log(body);
-    
+
     const params = body.data;
-    const bytes = CryptoJS.AES.decrypt(params, "admin");
-    const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    const decrypted = decrypt(params);
+    // const bytes = CryptoJS.AES.decrypt(params, "admin");
+    // const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
     const {
       table,

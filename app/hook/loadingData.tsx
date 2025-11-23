@@ -353,6 +353,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
 import { useSearchParams, useRouter } from "next/navigation";
 import CryptoJS from "crypto-js";
+import { encrypt } from "@/utils/crypto";
 
 export function useLoading({
   initialData = {},
@@ -385,20 +386,15 @@ export function useLoading({
   const fetchSingle = useCallback(
     async (append = false, payload?: any) => {
       if (!url) return;
-      const encrypted = CryptoJS.AES.encrypt(
-        JSON.stringify(payload),
-        SECRET
-      ).toString();
+      const encrypted = encrypt(payload);
 
-      const res = await axios.post(url, {data: encrypted});
+      const res = await axios.post(url, { data: encrypted });
       const items = res.data.items || res.data;
 
       if (append && Array.isArray(data?.data)) {
         setData({
           ...items,
           data: [
-            // ...data.data
-
             ...items.data,
           ],
         });
@@ -481,14 +477,15 @@ export function useLoading({
         setLoading(true);
         setError(null);
 
-        const encrypted = CryptoJS.AES.encrypt(
-          JSON.stringify(payload),
-          SECRET
-        ).toString();
+        const encrypted = encrypt({ ...payload, csrf: JSON.parse(localStorage.user ?? `{}`)?.csrf ?? '' })
+        //  CryptoJS.AES.encrypt(
+        //   JSON.stringify(payload),
+        //   SECRET
+        // ).toString();
         const res = await axios({
           url: submitEndpoint,
           method: options.method || "POST",
-          data: {data:encrypted}//payload,
+          data: { data: encrypted }//payload,
         });
 
         if (options.refetch !== false) {

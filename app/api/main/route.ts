@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/prisma"; // مسیر به Prisma Client شما
 import CryptoJS from "crypto-js";
 // لیست جداول مجاز
@@ -62,7 +62,8 @@ const filter = (t: T, d: Record<string, any>) => {
   );
 };
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  
   // prisma.banner.create({
   //   data:{
   //     title:"test",
@@ -106,20 +107,30 @@ export async function POST(req: Request) {
 
     const bytes = CryptoJS.AES.decrypt(body.data, SECRET);
     const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
+    console.log(decrypted);
+    
     const {
       nameTable,
       action,
       id,
       data,
+      csrf
     }: {
       nameTable: T;
       action: "create" | "update" | "delete";
       id?: string | number;
       data?: any;
+      csrf:any
     } = decrypted; // body;
-
-    console.log(tables.includes(nameTable));
+    if (req.cookies.get('csrf')?.value !==csrf) {
+            return NextResponse.json(
+        { error: "عدم انطباق csrf" },
+        { status: 401 }
+      );
+    }
+    // console.log(req.cookies.get('csrf')?.value,csrf);
+    
+    // console.log(tables.includes(nameTable));
 
     // اعتبارسنجی ورودی‌ها
     if (!nameTable || !tables.includes(nameTable)) {

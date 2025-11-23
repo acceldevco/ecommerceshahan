@@ -8,9 +8,8 @@ import { useStorage } from "../hook/localstorage";
 // آیکون‌ها
 const ChevronDownIcon = ({ isOpen }: { isOpen?: boolean }) => (
   <svg
-    className={`w-4 h-4 transition-transform duration-200 ${
-      isOpen ? "rotate-180" : ""
-    }`}
+    className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+      }`}
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -338,11 +337,10 @@ const MegaMenu = ({ datacategory }: any) => {
                   e.stopPropagation();
                   handleMobileSubcategoryClick(subcategory.id, parentId);
                 }}
-                className={`w-full flex items-center justify-between p-2 rounded-lg text-right transition-colors ${
-                  isOpen
+                className={`w-full flex items-center justify-between p-2 rounded-lg text-right transition-colors ${isOpen
                     ? "bg-[#B7B89F]/20 text-[#8a8b7a]"
                     : "text-gray-600 hover:bg-gray-50"
-                }`}
+                  }`}
               >
                 <span className="text-sm font-medium">{subcategory.name}</span>
 
@@ -377,9 +375,8 @@ const MegaMenu = ({ datacategory }: any) => {
 
     return (
       <div
-        className={`space-y-1 ${
-          level > 0 ? "pr-4 border-r border-gray-100" : ""
-        }`}
+        className={`space-y-1 ${level > 0 ? "pr-4 border-r border-gray-100" : ""
+          }`}
       >
         {subcategories.map((subcategory) => (
           <div key={subcategory.id} className="space-y-2">
@@ -466,11 +463,10 @@ const MegaMenu = ({ datacategory }: any) => {
                     <button
                       key={category.id}
                       onMouseEnter={() => handleMouseEnter(category)}
-                      className={`w-full text-right px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        activeCategory?.id === category.id
+                      className={`w-full text-right px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${activeCategory?.id === category.id
                           ? "bg-[#B7B89F]/20 text-[#8a8b7a] border-r-2 border-[#8a8b7a]"
                           : "text-gray-600 hover:bg-gray-50"
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center justify-between">
                         <span>{category.name}</span>
@@ -577,11 +573,10 @@ const MegaMenu = ({ datacategory }: any) => {
                     >
                       <button
                         onClick={() => handleCategoryClick(category)}
-                        className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
-                          open
+                        className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${open
                             ? "bg-[#B7B89F]/20 text-[#8a8b7a]"
                             : "text-gray-700 hover:bg-gray-50"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-3">
                           {category.featured && (
@@ -624,7 +619,7 @@ const MegaMenu = ({ datacategory }: any) => {
 };
 
 const UserProfile: any = () => (
-  <div className="flex items-center gap-3">
+  <a href="/admin" className="flex items-center gap-3">
     {/* Notification Badge */}
     {/* <div className="relative">
       <div className="w-8 h-8 overflow-hidden rounded-xl bg-[#8a8b7a] flex items-center justify-center shadow cursor-pointer hover:scale-105 transition-transform duration-200">
@@ -635,22 +630,22 @@ const UserProfile: any = () => (
     {/* User Info */}
     <div className="flex flex-col items-end">
       <span className="text-sm text-[#5a5b4a] font-medium">
-        {/* {JSON.parse(localStorage.user?? '{}')?.name} */}
+        {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.name : ""}
       </span>
       <span className="text-[10px] text-[#5a5b4a]/70 mt-0.5">
-        {/* {JSON.parse(localStorage.user??'{}')?.email} */}
+        {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.email : ""}
       </span>
     </div>
 
     {/* Profile Avatar */}
     <div className="w-10 h-10 overflow-hidden rounded-xl bg-gradient-to-br from-[#B7B89F] to-[#8a8b7a] border border-[#B7B89F]/50 shadow cursor-pointer hover:shadow-md transition-all duration-200" />
-  </div>
+  </a>
 );
 function Header({ datacategory }: any) {
   var [cart, setcart]: any = useStorage<any>("cart", {});
   return (
     <header className="w-full z-9999 h-16 bg-[#B7B89F]/30 backdrop-blur-md  ">
-      <div className="container w-full h-full flex items-center justify-between px-4">
+      <div className=" p-5 w-full h-full flex items-center justify-between px-4">
         {/* Navigation Section */}
         <div className="flex items-center gap-6 w-[50%]">
           {/* Shopping Cart with Badge */}
@@ -747,7 +742,7 @@ function Header({ datacategory }: any) {
             </button> */}
 
             <button className="p-2 hover:scale-105 transition-all duration-200 cursor-pointer group relative">
-              <div className="relative flex flex-col items-center">
+              <a href="/checkout" className="relative flex flex-col items-center">
                 <svg
                   width="36"
                   height="34"
@@ -818,7 +813,7 @@ function Header({ datacategory }: any) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </a>
             </button>
           </div>
 

@@ -31,26 +31,35 @@ export default function AuthPage() {
         setEmailSent(true);
         console.log("Reset password email sent to:", data.email);
       } else {
-var datas =
-  authMode === "login"
-    ? await axios.post(
-        "/api/sendverify",
-        { ...data },
-        { withCredentials: true }   // ⬅⬅ مهم‌ترین قسمت!
-      )
-    : await axios.post(
-        "/api/sendverify",
-        { ...data },
-        { withCredentials: true }   // ⬅⬅ این هم
-      );
+        var datas =
+          authMode === "login"
+            ?
+            // await axios.post(
+            //     "/api/sendverify",
+            //     { ...data },
+            //     { withCredentials: true }   // ⬅⬅ مهم‌ترین قسمت!
+            //   )
+            await axios
+              .post("api/auth/login", {
+                name: data.firstName,
+                lastName: data.lastName,
+                email: data.email,
+                password: data.password,
+              })
+            :
+            // await axios.post(
+            //     "/api/sendverify",
+            //     { ...data },
+            //     { withCredentials: true }   // ⬅⬅ این هم
+            //   );
 
-        // await axios
-        //   .post("api/auth/signup", {
-        //     name: data.firstName,
-        //     // lastName: data.lastName,
-        //     email: data.email,
-        //     password: data.password,
-        //   })
+            await axios
+              .post("api/auth/signup", {
+                name: data.firstName,
+                lastName: data.lastName,
+                email: data.email,
+                password: data.password,
+              })
         localStorage.user = JSON.stringify(datas.data.user)
         // console.log(datas.data.user);
 
@@ -162,7 +171,7 @@ var datas =
         )}
       </div>
 
-      
+
 
       <div>
         <label

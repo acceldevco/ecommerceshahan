@@ -452,8 +452,9 @@ const ImageManagerPanel: any = ({
                     />
 
                     {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent  transition-opacity duration-200">
                       <div className="absolute top-2 right-2 flex gap-1.5">
+                        {/* <div className="bg-red-500 p-5">ddasdsad</div> */}
                         <button
                           onClick={() => toggleSelectImage(img.id)}
                           className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all shadow ${

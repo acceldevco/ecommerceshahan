@@ -1547,7 +1547,7 @@ const NestedCategoryCheckbox = ({
     // if (checkedCount === allIds.length) return "checked";
     // console.log('selected',selected.find((d) => d === cat.id) !==undefined);
 
-    if (selected.find((d) => d.id === cat.id) !==undefined)  return "checked";
+    if (selected.find((d:any) => d.id === cat.id) !==undefined)  return "checked";
 
     // console.log(selected.find((d) => d.id === cat.id) !==undefined);
     return "indeterminate";

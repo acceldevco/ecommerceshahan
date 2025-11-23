@@ -34,16 +34,16 @@ export async function POST(req: Request) {
     }/api/verify?token=${encodeURIComponent(token)}`;
 
     // ارسال ایمیل
-    // await sendVerificationEmail(email, verifyLink);
+    await sendVerificationEmail(email, verifyLink);
 
     //   const HOST_EMAIL = process.env.HOST_EMAIL!;
     //   const USER_EMAIL = process.env.USER_EMAIL!;
     //   const PASS_EMAIL = process.env.PASS_EMAIL!;
-    //   //  const verifyUrl = `https://localhost:3000/api/verify?token=${verifyToken}`
-    //   // بررسی داده‌های ورودی
-    //   if (!email || !verifyLink) {
-    //     throw new Error("Missing required fields");
-    //   }
+    //    const verifyUrl = `https://localhost:3000/api/verify?token=${verifyToken}`
+    // //   // بررسی داده‌های ورودی
+    // //   if (!email || !verifyLink) {
+    // //     throw new Error("Missing required fields");
+    // //   }
 
     //   try {
 
@@ -103,7 +103,7 @@ export async function POST(req: Request) {
 
     const response = NextResponse.json({
       message: "Login successful",
-      user: "test", //{ id: user.id, email: user.email, name: user.name, lastname: user.lastname, phone: user.phone }
+      user: { id: user.id, email: user.email, name: user.name, phone: user.phone }
     });
 
     response.cookies.set({
