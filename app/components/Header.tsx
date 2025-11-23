@@ -338,8 +338,8 @@ const MegaMenu = ({ datacategory }: any) => {
                   handleMobileSubcategoryClick(subcategory.id, parentId);
                 }}
                 className={`w-full flex items-center justify-between p-2 rounded-lg text-right transition-colors ${isOpen
-                    ? "bg-[#B7B89F]/20 text-[#8a8b7a]"
-                    : "text-gray-600 hover:bg-gray-50"
+                  ? "bg-[#B7B89F]/20 text-[#8a8b7a]"
+                  : "text-gray-600 hover:bg-gray-50"
                   }`}
               >
                 <span className="text-sm font-medium">{subcategory.name}</span>
@@ -464,8 +464,8 @@ const MegaMenu = ({ datacategory }: any) => {
                       key={category.id}
                       onMouseEnter={() => handleMouseEnter(category)}
                       className={`w-full text-right px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${activeCategory?.id === category.id
-                          ? "bg-[#B7B89F]/20 text-[#8a8b7a] border-r-2 border-[#8a8b7a]"
-                          : "text-gray-600 hover:bg-gray-50"
+                        ? "bg-[#B7B89F]/20 text-[#8a8b7a] border-r-2 border-[#8a8b7a]"
+                        : "text-gray-600 hover:bg-gray-50"
                         }`}
                     >
                       <div className="flex items-center justify-between">
@@ -574,8 +574,8 @@ const MegaMenu = ({ datacategory }: any) => {
                       <button
                         onClick={() => handleCategoryClick(category)}
                         className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${open
-                            ? "bg-[#B7B89F]/20 text-[#8a8b7a]"
-                            : "text-gray-700 hover:bg-gray-50"
+                          ? "bg-[#B7B89F]/20 text-[#8a8b7a]"
+                          : "text-gray-700 hover:bg-gray-50"
                           }`}
                       >
                         <div className="flex items-center gap-3">
@@ -638,8 +638,8 @@ const UserProfile: any = () => (
     </div>
 
     {/* Profile Avatar */}
-    {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.email?<div className="w-10 h-10 overflow-hidden rounded-xl bg-gradient-to-br from-[#B7B89F] to-[#8a8b7a] border border-[#B7B89F]/50 shadow cursor-pointer hover:shadow-md transition-all duration-200" />:<a href="/auth"><User className="text-[#5a5b4a]"/></a> : ""}
-    
+    {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.email ? <div className="w-10 h-10 overflow-hidden rounded-xl bg-gradient-to-br from-[#B7B89F] to-[#8a8b7a] border border-[#B7B89F]/50 shadow cursor-pointer hover:shadow-md transition-all duration-200" /> : <a href="/auth"><User className="text-[#5a5b4a]" /></a> : ""}
+
   </a>
 );
 function Header({ datacategory }: any) {

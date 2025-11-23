@@ -27,215 +27,215 @@ interface Column {
   render?: (value: any, item: Employee) => React.ReactNode;
 }
 // کامپوننت مودال ریسپانسیو
-const EditEmployeeModal = ({
-  employee,
-  isOpen,
-  onClose,
-  onSave,
-}: {
-  employee: Employee | null;
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (data: Employee) => void;
-}) => {
-  const [formData, setFormData] = useState<Employee>(
-    employee || ({} as Employee)
-  );
+// const EditEmployeeModal = ({
+//   employee,
+//   isOpen,
+//   onClose,
+//   onSave,
+// }: {
+//   employee: Employee | null;
+//   isOpen: boolean;
+//   onClose: () => void;
+//   onSave: (data: Employee) => void;
+// }) => {
+//   const [formData, setFormData] = useState<Employee>(
+//     employee || ({} as Employee)
+//   );
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSave(formData);
-    onClose();
-  };
+//   const handleSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     onSave(formData);
+//     onClose();
+//   };
 
-  const handleChange = (field: keyof Employee, value: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+//   const handleChange = (field: keyof Employee, value: any) => {
+//     setFormData((prev) => ({
+//       ...prev,
+//       [field]: value,
+//     }));
+//   };
 
-  if (!isOpen) return null;
+//   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 animate-fadeIn">
-      <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-slideUp">
-        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white rounded-t-2xl">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold text-gray-900">
-              {employee?.id ? "ویرایش اطلاعات کارمند" : "افزودن کارمند جدید"}
-            </h2>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 text-2xl w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              ×
-            </button>
-          </div>
-        </div>
+//   // return (
+//   //   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 animate-fadeIn">
+//   //     <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-slideUp">
+//   //       <div className="p-6 border-b border-gray-200 sticky top-0 bg-white rounded-t-2xl">
+//   //         <div className="flex justify-between items-center">
+//   //           <h2 className="text-xl font-bold text-gray-900">
+//   //             {employee?.id ? "ویرایش اطلاعات کارمند" : "افزودن کارمند جدید"}
+//   //           </h2>
+//   //           <button
+//   //             onClick={onClose}
+//   //             className="text-gray-400 hover:text-gray-600 text-2xl w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+//   //           >
+//   //             ×
+//   //           </button>
+//   //         </div>
+//   //       </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            <div className="col-span-1 md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                نام کامل
-              </label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) => handleChange("name", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
-                required
-              />
-            </div>
+//   //       <form onSubmit={handleSubmit} className="p-6 space-y-6">
+//   //         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+//   //           <div className="col-span-1 md:col-span-2">
+//   //             <label className="block text-sm font-medium text-gray-700 mb-2">
+//   //               نام کامل
+//   //             </label>
+//   //             <input
+//   //               type="text"
+//   //               value={formData.name}
+//   //               onChange={(e) => handleChange("name", e.target.value)}
+//   //               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
+//   //               required
+//   //             />
+//   //           </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                ایمیل
-              </label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => handleChange("email", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
-                required
-              />
-            </div>
+//   //           <div>
+//   //             <label className="block text-sm font-medium text-gray-700 mb-2">
+//   //               ایمیل
+//   //             </label>
+//   //             <input
+//   //               type="email"
+//   //               value={formData.email}
+//   //               onChange={(e) => handleChange("email", e.target.value)}
+//   //               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
+//   //               required
+//   //             />
+//   //           </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                سن
-              </label>
-              <input
-                type="number"
-                value={formData.age}
-                onChange={(e) => handleChange("age", parseInt(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
-                min="18"
-                max="65"
-                required
-              />
-            </div>
+//   //           <div>
+//   //             <label className="block text-sm font-medium text-gray-700 mb-2">
+//   //               سن
+//   //             </label>
+//   //             <input
+//   //               type="number"
+//   //               value={formData.age}
+//   //               onChange={(e) => handleChange("age", parseInt(e.target.value))}
+//   //               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
+//   //               min="18"
+//   //               max="65"
+//   //               required
+//   //             />
+//   //           </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                سمت
-              </label>
-              <select
-                value={formData.role}
-                onChange={(e) => handleChange("role", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
-                required
-              >
-                <option value="توسعه‌دهنده ارشد">توسعه‌دهنده ارشد</option>
-                <option value="طراح UI/UX">طراح UI/UX</option>
-                <option value="مدیر محصول">مدیر محصول</option>
-                <option value="توسعه‌دهنده فرانت‌اند">
-                  توسعه‌دهنده فرانت‌اند
-                </option>
-                <option value="مهندس DevOps">مهندس DevOps</option>
-              </select>
-            </div>
+//   //           <div>
+//   //             <label className="block text-sm font-medium text-gray-700 mb-2">
+//   //               سمت
+//   //             </label>
+//   //             <select
+//   //               value={formData.role}
+//   //               onChange={(e) => handleChange("role", e.target.value)}
+//   //               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
+//   //               required
+//   //             >
+//   //               <option value="توسعه‌دهنده ارشد">توسعه‌دهنده ارشد</option>
+//   //               <option value="طراح UI/UX">طراح UI/UX</option>
+//   //               <option value="مدیر محصول">مدیر محصول</option>
+//   //               <option value="توسعه‌دهنده فرانت‌اند">
+//   //                 توسعه‌دهنده فرانت‌اند
+//   //               </option>
+//   //               <option value="مهندس DevOps">مهندس DevOps</option>
+//   //             </select>
+//   //           </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                حقوق (تومان)
-              </label>
-              <input
-                type="number"
-                value={formData.salary}
-                onChange={(e) =>
-                  handleChange("salary", parseInt(e.target.value))
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
-                required
-              />
-            </div>
+//   //           <div>
+//   //             <label className="block text-sm font-medium text-gray-700 mb-2">
+//   //               حقوق (تومان)
+//   //             </label>
+//   //             <input
+//   //               type="number"
+//   //               value={formData.salary}
+//   //               onChange={(e) =>
+//   //                 handleChange("salary", parseInt(e.target.value))
+//   //               }
+//   //               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
+//   //               required
+//   //             />
+//   //           </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                وضعیت
-              </label>
-              <select
-                value={formData.status}
-                onChange={(e) => handleChange("status", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
-                required
-              >
-                <option value="active">فعال</option>
-                <option value="inactive">غیرفعال</option>
-              </select>
-            </div>
+//   //           <div>
+//   //             <label className="block text-sm font-medium text-gray-700 mb-2">
+//   //               وضعیت
+//   //             </label>
+//   //             <select
+//   //               value={formData.status}
+//   //               onChange={(e) => handleChange("status", e.target.value)}
+//   //               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
+//   //               required
+//   //             >
+//   //               <option value="active">فعال</option>
+//   //               <option value="inactive">غیرفعال</option>
+//   //             </select>
+//   //           </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                سطح دسترسی
-              </label>
-              <select
-                value={formData.isAdmin ? "true" : "false"}
-                onChange={(e) =>
-                  handleChange("isAdmin", e.target.value === "true")
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
-                required
-              >
-                <option value="false">کاربر عادی</option>
-                <option value="true">مدیر</option>
-              </select>
-            </div>
+//   //           <div>
+//   //             <label className="block text-sm font-medium text-gray-700 mb-2">
+//   //               سطح دسترسی
+//   //             </label>
+//   //             <select
+//   //               value={formData.isAdmin ? "true" : "false"}
+//   //               onChange={(e) =>
+//   //                 handleChange("isAdmin", e.target.value === "true")
+//   //               }
+//   //               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
+//   //               required
+//   //             >
+//   //               <option value="false">کاربر عادی</option>
+//   //               <option value="true">مدیر</option>
+//   //             </select>
+//   //           </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                تاریخ عضویت
-              </label>
-              <input
-                type="date"
-                value={formData.joinDate}
-                onChange={(e) => handleChange("joinDate", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
-                required
-              />
-            </div>
-          </div>
+//   //           <div>
+//   //             <label className="block text-sm font-medium text-gray-700 mb-2">
+//   //               تاریخ عضویت
+//   //             </label>
+//   //             <input
+//   //               type="date"
+//   //               value={formData.joinDate}
+//   //               onChange={(e) => handleChange("joinDate", e.target.value)}
+//   //               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
+//   //               required
+//   //             />
+//   //           </div>
+//   //         </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              پروژه‌ها (با کاما جدا کنید)
-            </label>
-            <input
-              type="text"
-              value={formData.projects?.join(", ") || ""}
-              onChange={(e) =>
-                handleChange(
-                  "projects",
-                  e.target.value.split(",").map((p) => p.trim())
-                )
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
-              placeholder="پروژه اول, پروژه دوم, ..."
-            />
-          </div>
+//   //         <div>
+//   //           <label className="block text-sm font-medium text-gray-700 mb-2">
+//   //             پروژه‌ها (با کاما جدا کنید)
+//   //           </label>
+//   //           <input
+//   //             type="text"
+//   //             value={formData.projects?.join(", ") || ""}
+//   //             onChange={(e) =>
+//   //               handleChange(
+//   //                 "projects",
+//   //                 e.target.value.split(",").map((p) => p.trim())
+//   //               )
+//   //             }
+//   //             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base"
+//   //             placeholder="پروژه اول, پروژه دوم, ..."
+//   //           />
+//   //         </div>
 
-          <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-gray-200">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors duration-200 font-medium order-2 sm:order-1"
-            >
-              انصراف
-            </button>
-            <button
-              type="submit"
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium shadow-sm order-1 sm:order-2"
-            >
-              {employee?.id ? "ذخیره تغییرات" : "افزودن کارمند"}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
+//   //         <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-gray-200">
+//   //           <button
+//   //             type="button"
+//   //             onClick={onClose}
+//   //             className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors duration-200 font-medium order-2 sm:order-1"
+//   //           >
+//   //             انصراف
+//   //           </button>
+//   //           <button
+//   //             type="submit"
+//   //             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium shadow-sm order-1 sm:order-2"
+//   //           >
+//   //             {employee?.id ? "ذخیره تغییرات" : "افزودن کارمند"}
+//   //           </button>
+//   //         </div>
+//   //       </form>
+//   //     </div>
+//   //   </div>
+//   // );
+// };
 
 // کامپوننت کارت برای نمایش موبایل
 const EmployeeMobileCard = ({
@@ -828,12 +828,12 @@ export default function ProductsPage() {
         )} */}
 
         {/* مودال ویرایش */}
-        <EditEmployeeModal
+        {/* <EditEmployeeModal
           employee={editModal.employee}
           isOpen={editModal.isOpen}
           onClose={() => setEditModal({ isOpen: false, employee: null })}
           onSave={handleEditSave}
-        />
+        /> */}
       </div>
 
       {/* استایل‌های سفارشی برای انیمیشن */}
