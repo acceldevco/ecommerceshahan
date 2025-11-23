@@ -185,14 +185,14 @@ const Layout = ({ children }: any) => {
               <div className="flex items-center gap-2 pr-2 lg:pr-4 border-r border-gray-200">
                 <div className="text-right hidden sm:block">
                   <p className="font-semibold text-gray-900 text-sm lg:text-base">
-                    مدیر سیستم
+                   {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.name : ""}
                   </p>
                   <p className="text-xs lg:text-sm text-gray-500">
-                    admin@shop.com
+                    {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.email : ""}
                   </p>
                 </div>
                 <div className="w-8 h-8 lg:w-10 lg:h-10 bg-[#B7B89F] rounded-full flex items-center justify-center text-white font-bold">
-                  M
+                 {typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") ?? "{}")?.name[0] : ""}
                 </div>
               </div>
             </div>
