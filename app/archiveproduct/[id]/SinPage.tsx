@@ -536,6 +536,7 @@ export default function SingleProductPage() {
                     className="w-8 text-center font-medium"
                     style={{ color: colorPalette.text }}
                   >
+                    {/* <input type="text" value={cart?.[params]?.qty ?? 0} className="w-50"/> */}
                     {cart?.[params]?.qty ?? 0}
                   </span>
                   <button

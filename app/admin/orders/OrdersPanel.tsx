@@ -520,7 +520,7 @@ export default function OrdersPanel() {
             onClick={(e) => {
               e.stopPropagation();
               // handleViewOrder(item);
-              console.log(value, item);
+              // console.log(value, item);
 
               ui.open("dialogorder", { item });
             }}
