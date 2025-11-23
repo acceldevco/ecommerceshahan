@@ -8,7 +8,7 @@ const formatPrice = (price: any) =>
   price?.toLocaleString("fa-IR", { maximumFractionDigits: 0 });
 
 export default function ProductCard({ product }: any) {
-  var [cart, setcart]:any = useStorage("cart", "");
+  var [cart, setcart]: any = useStorage("cart", "");
   return (
     <div
       key={product.id}
@@ -77,14 +77,22 @@ export default function ProductCard({ product }: any) {
 
         {/* Add to Cart Button */}
         <button
-          onClick={() =>
+          onClick={() => {
+            // console.log('product.id', {
+            //   [product.id]: {
+            //     ...product,
+            //     // qty: ,
+            //   },
+            // });
+
             setcart({
               ...cart,
               [product.id]: {
                 ...product,
-                qty: cart[product.id]?.qty+1,
+                qty: (cart[product.id]?.qty ?? 0) + 1 
               },
             })
+          }
           }
           className="mt-auto w-full py-2 bg-[#B7B89F] hover:bg-[#a5a68f] text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 group/btn text-sm"
         >
