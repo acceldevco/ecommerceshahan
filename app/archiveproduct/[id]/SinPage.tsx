@@ -194,12 +194,12 @@ export default function SingleProductPage() {
     setIsAddingToCart(true);
     // شبیه‌سازی عملیات افزودن به سبد خرید
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("Added to cart:", {
-      product: product.name,
-      color: selectedColor,
-      storage: selectedStorage,
-      quantity: quantity,
-    });
+    // console.log("Added to cart:", {
+    //   product: product.name,
+    //   color: selectedColor,
+    //   storage: selectedStorage,
+    //   quantity: quantity,
+    // });
     setIsAddingToCart(false);
   };
 
