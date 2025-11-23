@@ -161,7 +161,7 @@ const Layout = ({ children }: any) => {
               </button>
 
           
-              <div className="relative">
+              {/* <div className="relative">
                 <Search
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
                   size={20}
@@ -172,7 +172,7 @@ const Layout = ({ children }: any) => {
                   className="pr-10 pl-4 py-2 border border-gray-300 rounded-lg w-60 lg:w-80
                   focus:outline-none focus:ring-2 focus:ring-[#B7B89F] text-sm lg:text-base"
                 />
-              </div>
+              </div> */}
             </div>
 
          
