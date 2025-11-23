@@ -65,7 +65,7 @@ export default function CategoryGrid({
 
       {/* Compact Categories Grid */}
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
-        {categories.map((category) => {
+        {categories.map((category:any) => {
           const isActive = activeCategory === category.id;
           
           return (
@@ -88,7 +88,7 @@ export default function CategoryGrid({
                     variant === 'gradient' ? 'bg-white/20' : 'bg-white'
                   }`}>
                     <Image
-                      src={category.image ?? "/remove.png"}
+                      src={category.imageUrl ?? "/remove.png"}
                       alt={category.alt || category.name}
                       fill
                       className={`object-cover transition-transform duration-500 ${

@@ -11,12 +11,13 @@ import Card from "./components/Card";
 import ProductList from "./components/ProductList";
 import { useLoading } from "./hook/loadingData";
 
-export default function LandingPage({children}:any) {
+export default function LandingPage({ children }: any) {
   const { data, fetchData, loading, hasMore } = useLoading({
     url: "/api/getdata",
     initialData: {
       table: "product",
       page: 1,
+      pageSize: 10,
       filters: { include: { categories: true, files: true } },
     },
   });
@@ -24,6 +25,13 @@ export default function LandingPage({children}:any) {
     url: "/api/getdata",
     initialData: {
       table: "category",
+      pageSize: 100,
+      filters: {
+        where: {
+          parentId: null
+        }
+      }
+
       // page: 1,
       // filters: { include: { categories: true, files: true } },
     },
@@ -33,11 +41,11 @@ export default function LandingPage({children}:any) {
 
 
 
-    const { data: banner } = useLoading({
+  const { data: banner } = useLoading({
     url: "/api/getdata",
     initialData: {
       table: "banner",
-      pageSize:10
+      pageSize: 10
       // page: 1,
       // filters: { include: { categories: true, files: true } },
     },
@@ -50,16 +58,16 @@ export default function LandingPage({children}:any) {
     },
     {
       id: 2,
-    image: "http://localhost:3000/uploads/Frame.png",
+      image: "http://localhost:3000/uploads/Frame.png",
     },
     {
       id: 3,
-    image: "http://localhost:3000/uploads/banner1.png",
+      image: "http://localhost:3000/uploads/banner1.png",
       alt: "Mountain adventure",
     },
     {
       id: 4,
-    image: "http://localhost:3000/uploads/banner1.png",
+      image: "http://localhost:3000/uploads/banner1.png",
       alt: "Beach sunset",
     },
   ];
@@ -161,18 +169,18 @@ export default function LandingPage({children}:any) {
     >
       <main
         className="p-2"
-        // className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start"
+      // className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start"
       >
         {/* {JSON.stringify(banner?.data?.filter((d)=>d.position === 'TOP'))} */}
         <div className="mb-5">
-        <ImageSlider
-          slides={banner?.data?.filter((d:any)=>d.position === 'TOP') ?? []}
-          autoPlay={true}
-          autoPlayInterval={4000}
-          showThumbnails={true}
-          showArrows={true}
-          showDots={true}
-        />
+          <ImageSlider
+            slides={banner?.data?.filter((d: any) => d.position === 'TOP') ?? []}
+            autoPlay={true}
+            autoPlayInterval={4000}
+            showThumbnails={true}
+            showArrows={true}
+            showDots={true}
+          />
         </div>
 
         {/* <ProductList/> */}

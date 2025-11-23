@@ -8,6 +8,11 @@ import { signToken } from "@/utils/jwt";
 const JWT_SECRET = process.env.SECRET_TOKEN!;
 
 export async function POST(req: Request) {
+  // prisma.category.findMany({
+  //   where:{
+  //     parentId:null
+  //   }
+  // })
   // const { email, password, name } = await req.json();
   // return NextResponse.json({ ok: true, message: "Verification email sent" })
   try {

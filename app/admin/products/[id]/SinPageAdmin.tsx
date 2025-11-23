@@ -55,6 +55,19 @@ export default function ProfessionalProductPage() {
   const [image, saveImages]: any = useStorage("image", []);
   var ui = useContext(ContextMain);
   var params: any = useParams().id;
+
+    var files: any = useLoading({
+      url: "/api/getdata",
+      submitUrl: "/api/main",
+      initialData: {
+        table: "file",
+      },
+    });
+
+
+
+
+
   var configcomment: any = {
     url: "/api/getdata",
     submitUrl: "/api/main",
@@ -882,6 +895,7 @@ export default function ProfessionalProductPage() {
                   <div className="space-y-3 mb-4">
                     {/* {JSON.stringify(data?.data?.[0]?.categories)} */}
                     <NestedCategoryCheckbox
+                    files={files}
                       datacat={datacat}
                       selected={data?.data?.[0]?.categories ?? []}
                       onSelectionChange={(selected: any) => {

@@ -21,7 +21,7 @@ const SECRET = process.env.SECRET!;
 // فیلدهای مجاز هر جدول
 const whitelist: any = {
   store: ["name", "currency"],
-  category: ["name", "storeId", "parentId"],
+  category: ["name", "storeId", "parentId", "imageUrl"],
   subcategory: ["title", "url", "size", "categoryId"],
   product: [
     "name",
@@ -53,8 +53,6 @@ const whitelist: any = {
 
 // فیلتر داده‌ها طبق whitelist
 const filter = (t: T, d: Record<string, any>) => {
-  // console.log('fdfdf',t,d,whitelist[t].includes(Object.keys(d)));
-
   return Object.fromEntries(
     Object.entries(d).filter(([k]) => {
       return whitelist[t].includes(k);
@@ -63,7 +61,6 @@ const filter = (t: T, d: Record<string, any>) => {
 };
 
 export async function POST(req: NextRequest) {
-  
   // prisma.banner.create({
   //   data:{
   //     title:"test",
@@ -107,29 +104,25 @@ export async function POST(req: NextRequest) {
 
     const bytes = CryptoJS.AES.decrypt(body.data, SECRET);
     const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-    console.log(decrypted);
-    
+
     const {
       nameTable,
       action,
       id,
       data,
-      csrf
+      csrf,
     }: {
       nameTable: T;
       action: "create" | "update" | "delete";
       id?: string | number;
       data?: any;
-      csrf:any
+      csrf: any;
     } = decrypted; // body;
-    if (req.cookies.get('csrf')?.value !==csrf) {
-            return NextResponse.json(
-        { error: "عدم انطباق csrf" },
-        { status: 401 }
-      );
+    if (req.cookies.get("csrf")?.value !== csrf) {
+      return NextResponse.json({ error: "عدم انطباق csrf" }, { status: 401 });
     }
     // console.log(req.cookies.get('csrf')?.value,csrf);
-    
+
     // console.log(tables.includes(nameTable));
 
     // اعتبارسنجی ورودی‌ها
@@ -150,12 +143,10 @@ export async function POST(req: NextRequest) {
     if (!model) {
       return NextResponse.json({ error: "مدل یافت نشد" }, { status: 500 });
     }
-
     const safe = data ? filter(nameTable, data) : undefined;
-    console.log("safe", safe);
 
     let result;
-    console.log(action);
+
     switch (action) {
       case "create":
         if (!safe || !Object.keys(safe).length)

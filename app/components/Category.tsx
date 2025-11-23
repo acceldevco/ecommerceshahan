@@ -1374,7 +1374,11 @@ import {
   Trash2,
   Plus,
   Save,
+  Image,
 } from "lucide-react";
+import ImageManagerPanel from "./ImageManagerPanel";
+import { useLoading } from "../hook/loadingData";
+import { useStorage } from "../hook/localstorage";
 // import { useLoading } from "../hook/loadingData";
 
 const NestedCategoryCheckbox = ({
@@ -1382,6 +1386,7 @@ const NestedCategoryCheckbox = ({
   showcnt = true,
   selected = [],
   datacat = [],
+  files = []
 }: any) => {
   const { data, loading, error, submitData }: any = datacat; // {}
 
@@ -1417,7 +1422,39 @@ const NestedCategoryCheckbox = ({
   const [editName, setEditName] = useState("");
   const [addingParentId, setAddingParentId] = useState<number | null>(null);
   const [newCategoryName, setNewCategoryName] = useState("");
+  const [dialog, setDialog] = useState(false);
 
+
+  // var files: any = useLoading({
+  //   url: "/api/getdata",
+  //   submitUrl: "/api/main",
+  //   initialData: {
+  //     table: "file",
+  //   },
+  // });
+  var [imgcate, setimgcat] = useStorage('image', {})
+  const handleImageSelect = (imageUrl: any) => {
+    console.log('test00',imageUrl, dialog);
+    var id = dialog;
+    submitData({
+      nameTable: "category",
+      action: "update",
+      data: {
+        imageUrl: imageUrl?.[0]?.url,
+      },
+      id: id,
+    }).then((d) => {
+      setimgcat(imageUrl)
+      // setValue("imageUrl", imageUrl?.[0]?.url);
+      setDialog(false);
+    });
+
+
+
+
+
+
+  };
   // useEffect(() => {
   //   setCheckedIds(new Set(selected.map((d) => d.id)));
   // }, [selected]);
@@ -1537,7 +1574,7 @@ const NestedCategoryCheckbox = ({
   };
 
   const getCheckboxState = (cat: any) => {
-    
+
 
     const allIds = getAllChildrenIds(cat);
 
@@ -1547,7 +1584,7 @@ const NestedCategoryCheckbox = ({
     // if (checkedCount === allIds.length) return "checked";
     // console.log('selected',selected.find((d) => d === cat.id) !==undefined);
 
-    if (selected.find((d:any) => d.id === cat.id) !==undefined)  return "checked";
+    if (selected.find((d: any) => d.id === cat.id) !== undefined) return "checked";
 
     // console.log(selected.find((d) => d.id === cat.id) !==undefined);
     return "indeterminate";
@@ -1612,9 +1649,8 @@ const NestedCategoryCheckbox = ({
       <div>
         <div
           dir="rtl"
-          className={`flex items-center gap-3 py-2 px-3 rounded-lg group ${
-            checkedIds.has(category.id) ? "bg-[#b7b89e]/10" : "hover:bg-gray-50"
-          }`}
+          className={`flex items-center gap-3 py-2 px-3 rounded-lg group ${checkedIds.has(category.id) ? "bg-[#b7b89e]/10" : "hover:bg-gray-50"
+            }`}
           style={{ paddingRight: `${level * 1.5 + 0.75}rem` }}
         >
           {hasChildren ? (
@@ -1630,7 +1666,8 @@ const NestedCategoryCheckbox = ({
           )}
 
           <div className="flex items-center flex-1 gap-2">
-            {/* {JSON.stringify(checkboxState)} */}
+            {category.imageUrl && <img width={40} height={40} src={category.imageUrl} alt={category.name} srcset="" />}
+
             <input
               type="checkbox"
               checked={checkboxState === "checked"}
@@ -1688,7 +1725,12 @@ const NestedCategoryCheckbox = ({
                 <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   {showcnt && (
                     <>
-                      {" "}
+                      <button onClick={() => {
+                        setDialog(category.id)
+
+                      }} className="text-[#b7b89e] hover:bg-[#b7b89e] hover:text-white p-1 rounded transition-colors">
+                        <Image size={16} />
+                      </button>
                       <button
                         onClick={() => startEdit(category.id)}
                         className="text-[#b7b89e] hover:bg-[#b7b89e] hover:text-white p-1 rounded transition-colors"
@@ -1720,6 +1762,7 @@ const NestedCategoryCheckbox = ({
                       >
                         <Trash2 size={16} />
                       </button>
+
                     </>
                   )}
                 </div>
@@ -1782,6 +1825,7 @@ const NestedCategoryCheckbox = ({
                 >
                   <X size={16} />
                 </button>
+
               </>
             )}
           </div>
@@ -1985,6 +2029,14 @@ const NestedCategoryCheckbox = ({
           </div>
         )}
       </div>
+      <ImageManagerPanel
+        files={files ?? {}}
+        radio={true}
+        onImageToggle={handleImageSelect}
+        onClose={() => setDialog(false)}
+        mode="dialog"
+        isOpen={dialog}
+      />
     </div>
   );
 };
