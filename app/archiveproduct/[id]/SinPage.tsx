@@ -254,7 +254,7 @@ export default function SingleProductPage() {
               >
                 <img
                   src={images?.[selectedImage] ??'/remove.png'}
-                  alt={product.name}
+                  // alt={product.name}
                   className="w-full h-full object-contain"
                 />
 
