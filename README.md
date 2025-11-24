@@ -48,7 +48,7 @@ GitHub: https://github.com/acceldevco/ecommerceshahan.git
 -   **Database:** PostgreSQL\
 -   **Styling:** TailwindCSS\
 -   **Authentication:** Token-based (JWT)\
--   **Deployment:** Docker , Vercel / Linux server
+-   **Deployment:**  Vercel 
 
 ------------------------------------------------------------------------
 
