@@ -664,9 +664,8 @@ export default function OrdersPanel() {
         {/* لیست سفارشات */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
           {/* {JSON.stringify(data.data)} */}
-          {data?.data?.length > 0 ? (
-            <List
-            loadmore={loadMore}
+                      <List
+              loadmore={loadMore}
               configFilter={configFilter}
               searchable={false}
               changesearch={(p: any) => {
@@ -679,7 +678,7 @@ export default function OrdersPanel() {
                 fetchData(true, {});
                 console.log(p);
               }}
-              items={data?.data ?? []}
+              items={data?.data?.length > 0 ? data?.data : []}
               columns={columns}
               loadingmore={true}
               onItemClick={handleItemClick}
@@ -691,9 +690,11 @@ export default function OrdersPanel() {
               title="لیست سفارشات"
               emptyMessage="هیچ سفارشی یافت نشد"
             />
+          {/* {data?.data?.length > 0 ? (
+
           ) : (
             ""
-          )}
+          )} */}
         </div>
         {/* {JSON.stringify(data)} */}
       </div>
