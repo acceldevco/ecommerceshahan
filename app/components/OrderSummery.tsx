@@ -347,7 +347,7 @@ function OrderSummery() {
                         </div>
 
                         {/* قیمت و دکمه‌های افزایش/کاهش */}
-                        <div className="flex flex-col items-end gap-1.5">
+                        {/* <div className="flex flex-col items-end gap-1.5">
                           <div className="text-base font-bold text-[#B7B89F] bg-[#B7B89F]/10 px-2 py-1 rounded-md">
                             {(product.price * cartItem.qty).toLocaleString()} تومان
                           </div>
@@ -388,7 +388,80 @@ function OrderSummery() {
                               <Plus className="w-3 h-3" />
                             </button>
                           </div>
-                        </div>
+                        </div> */}
+                        <div className="flex flex-col items-end gap-1.5">
+  <div className="text-base font-bold text-[#B7B89F] bg-[#B7B89F]/10 px-2 py-1 rounded-md">
+    {(product.price * cartItem.qty).toLocaleString()} تومان
+  </div>
+
+  <div className="flex items-center gap-1.5 bg-gray-100 rounded-md p-1">
+    <button
+      type="button"
+      disabled={cartItem.qty <= 1}
+      onClick={() => {
+        const newQty = cartItem.qty - 1;
+        if (newQty <= 0) {
+          const newCart = { ...cart };
+          delete newCart[id];
+          setCart(newCart);
+        } else {
+          setCart({
+            ...cart,
+            [id]: { ...cartItem, qty: newQty },
+          });
+        }
+      }}
+      className="w-6 h-6 flex items-center justify-center bg-white text-gray-700 rounded shadow-sm hover:bg-gray-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+    >
+      <Minus className="w-3 h-3" />
+    </button>
+
+    <input
+      type="number"
+      value={cartItem.qty}
+      min="1"
+      max={product.stock}
+      onChange={(e) => {
+        const newQty = parseInt(e.target.value) || 1;
+        if (newQty <= 0) {
+          const newCart = { ...cart };
+          delete newCart[id];
+          setCart(newCart);
+        } else if (newQty > product.stock) {
+          setCart({
+            ...cart,
+            [id]: { ...cartItem, qty: product.stock },
+          });
+        } else {
+          setCart({
+            ...cart,
+            [id]: { ...cartItem, qty: newQty },
+          });
+        }
+      }}
+      onBlur={(e) => {
+        if (e.target.value === "" || parseInt(e.target.value) < 1) {
+          const newCart = { ...cart };
+          delete newCart[id];
+          setCart(newCart);
+        }
+      }}
+      className="w-12 h-6 text-center text-xs font-medium bg-white border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-[#B7B89F] focus:border-transparent"
+    />
+
+    <button
+      type="button"
+      disabled={cartItem.qty >= product.stock}
+      onClick={() => {
+        const newQty = Math.min(cartItem.qty + 1, product.stock);
+        setCart({ ...cart, [id]: { ...cartItem, qty: newQty } });
+      }}
+      className="w-6 h-6 flex items-center justify-center bg-white text-gray-700 rounded shadow-sm hover:bg-gray-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+    >
+      <Plus className="w-3 h-3" />
+    </button>
+  </div>
+</div>
                       </div>
                     </div>
 
