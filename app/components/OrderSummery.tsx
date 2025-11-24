@@ -421,10 +421,10 @@ function OrderSummery() {
       value={cartItem.qty}
       min="1"
       max={product.stock}
-      onChange={(e) => {
+      onChange={(e:any) => {
         const newQty = parseInt(e.target.value) || 1;
         if (newQty <= 0) {
-          const newCart = { ...cart };
+          const newCart:any = { ...cart };
           delete newCart[id];
           setCart(newCart);
         } else if (newQty > product.stock) {
@@ -439,9 +439,9 @@ function OrderSummery() {
           });
         }
       }}
-      onBlur={(e) => {
+      onBlur={(e:any) => {
         if (e.target.value === "" || parseInt(e.target.value) < 1) {
-          const newCart = { ...cart };
+          const newCart:any = { ...cart };
           delete newCart[id];
           setCart(newCart);
         }
