@@ -73,7 +73,7 @@ export default function SingleProductPage() {
 
 
   useLoading({
-    
+
   })
 
   const product = {}
@@ -253,7 +253,7 @@ export default function SingleProductPage() {
                 style={{ backgroundColor: colorPalette.background }}
               >
                 <img
-                  src={images?.[selectedImage] ??'/remove.png'}
+                  src={images?.[selectedImage] ?? '/remove.png'}
                   // alt={product.name}
                   className="w-full h-full object-contain"
                 />
@@ -267,7 +267,7 @@ export default function SingleProductPage() {
                     {parseInt(
                       (data?.data?.[0]?.discountedPrice /
                         data?.data?.[0]?.price) *
-                        100 as any
+                      100 as any
                     )}
                     % تخفیف
                   </div>
@@ -313,9 +313,8 @@ export default function SingleProductPage() {
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`flex-shrink-0 w-20 h-20 rounded-lg border-2 overflow-hidden transition-all ${
-                    selectedImage === index ? "ring-2" : "hover:border-gray-300"
-                  }`}
+                  className={`flex-shrink-0 w-20 h-20 rounded-lg border-2 overflow-hidden transition-all ${selectedImage === index ? "ring-2" : "hover:border-gray-300"
+                    }`}
                   style={{
                     backgroundColor: colorPalette.background,
                     borderColor:
@@ -509,7 +508,7 @@ export default function SingleProductPage() {
                 >
                   تعداد:
                 </span>
-                <div
+                {/* <div
                   className="flex items-center gap-3 bg-white border rounded-xl px-3 py-2"
                   style={{ borderColor: colorPalette.primaryLight }}
                 >
@@ -536,7 +535,7 @@ export default function SingleProductPage() {
                     className="w-8 text-center font-medium"
                     style={{ color: colorPalette.text }}
                   >
-                    {/* <input type="text" value={cart?.[params]?.qty ?? 0} className="w-50"/> */}
+                   
                     {cart?.[params]?.qty ?? 0}
                   </span>
                   <button
@@ -557,6 +556,90 @@ export default function SingleProductPage() {
                     //   quantity < product.stockCount && setQuantity(quantity + 1)
                     // }
                     className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+                    style={{ color: colorPalette.text }}
+                  >
+                    +
+                  </button>
+                </div> */}
+                <div
+                  className="flex items-center gap-3 bg-white border rounded-xl px-3 py-2"
+                  style={{ borderColor: colorPalette.primaryLight }}
+                >
+                  <button
+                    onClick={() => {
+                      setcart({
+                        ...cart,
+                        [data?.data?.[0].id]: {
+                          ...data?.data?.[0],
+                          qty:
+                            cart[data?.data?.[0].id]?.qty > 1
+                              ? cart[data?.data?.[0].id]?.qty - 1
+                              : 0,
+                        },
+                      });
+                    }}
+                    disabled={!(cart?.[data?.data?.[0].id]?.qty > 1)}
+                    className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    style={{ color: colorPalette.text }}
+                  >
+                    -
+                  </button>
+
+                  <input
+                    type="number"
+                    value={cart?.[params]?.qty ?? 0}
+                    min="0"
+                    max={data?.data?.[0].stock}
+                    onChange={(e) => {
+                      const newQty = parseInt(e.target.value) || 0;
+                      if (newQty <= 0) {
+                        const newCart = { ...cart };
+                        delete newCart[data?.data?.[0].id];
+                        setcart(newCart);
+                      } else if (newQty > data?.data?.[0].stock) {
+                        setcart({
+                          ...cart,
+                          [data?.data?.[0].id]: {
+                            ...data?.data?.[0],
+                            qty: data?.data?.[0].stock,
+                          },
+                        });
+                      } else {
+                        setcart({
+                          ...cart,
+                          [data?.data?.[0].id]: {
+                            ...data?.data?.[0],
+                            qty: newQty,
+                          },
+                        });
+                      }
+                    }}
+                    onBlur={(e: any) => {
+                      if (e.target.value === "" || parseInt(e.target.value) < 1) {
+                        const newCart:any = { ...cart };
+                        delete newCart[data?.data?.[0].id];
+                        setcart(newCart);
+                      }
+                    }}
+                    className="w-12 h-8 text-center font-medium bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-blue-200 rounded-md"
+                    style={{ color: colorPalette.text }}
+                  />
+
+                  <button
+                    onClick={() => {
+                      setcart({
+                        ...cart,
+                        [data?.data?.[0].id]: {
+                          ...data?.data?.[0],
+                          qty:
+                            data?.data?.[0].stock > cart[data?.data?.[0].id]?.qty
+                              ? cart[data?.data?.[0].id]?.qty + 1
+                              : data?.data?.[0].stock,
+                        },
+                      });
+                    }}
+                    disabled={cart?.[data?.data?.[0].id]?.qty >= data?.data?.[0].stock}
+                    className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                     style={{ color: colorPalette.text }}
                   >
                     +
@@ -683,9 +766,8 @@ export default function SingleProductPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 min-w-40 px-6 py-4 font-medium text-lg transition-colors ${
-                    activeTab === tab.id ? "border-b-2" : "hover:text-gray-700"
-                  }`}
+                  className={`flex-1 min-w-40 px-6 py-4 font-medium text-lg transition-colors ${activeTab === tab.id ? "border-b-2" : "hover:text-gray-700"
+                    }`}
                   style={{
                     color:
                       activeTab === tab.id
@@ -805,9 +887,8 @@ export default function SingleProductPage() {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-4 h-4 ${
-                            i < review.rating ? "fill-current" : "text-gray-300"
-                          }`}
+                          className={`w-4 h-4 ${i < review.rating ? "fill-current" : "text-gray-300"
+                            }`}
                           style={{
                             color:
                               i < review.rating
