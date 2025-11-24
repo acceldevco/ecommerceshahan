@@ -44,7 +44,7 @@ GitHub: https://github.com/acceldevco/ecommerceshahan.git
 ## 🏗️ تکنولوژی‌های مورد استفاده
 
 -   **Front-end:** Next.js\
--   **Back-end:** Node.js / API\
+-   **Back-end:**  API\
 -   **Database:** PostgreSQL\
 -   **Styling:** TailwindCSS\
 -   **Authentication:** Token-based (JWT)\
