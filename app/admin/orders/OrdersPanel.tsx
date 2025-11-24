@@ -602,7 +602,7 @@ export default function OrdersPanel() {
   const configFilter = [
     {
       name: "status",
-      select: ["PROCESSING", "PAID", "SENT", "DELIVERED", "CANCELED"],
+      select: ["در حال پردازش", "پرداخت شده", "ارسال شده", "تحویل داده شده", "لغو شده"],
       change: (e: any) => {
         fetchData(true, {
           pageSize: 5,
@@ -664,32 +664,32 @@ export default function OrdersPanel() {
         {/* لیست سفارشات */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
           {/* {JSON.stringify(data.data)} */}
-                      <List
-              loadmore={loadMore}
-              configFilter={configFilter}
-              searchable={false}
-              changesearch={(p: any) => {
-                const conditions = ["name", "email"].reduce(
-                  (a: any, f: any) => (
-                    a.push({ [f]: { contains: "q", mode: "insensitive" } }), a
-                  ),
-                  []
-                );
-                fetchData(true, {});
-                console.log(p);
-              }}
-              items={data?.data?.length > 0 ? data?.data : []}
-              columns={columns}
-              loadingmore={true}
-              onItemClick={handleItemClick}
-              // searchable={true}
-              sortable={true}
-              selectable={true}
-              pagination={true}
-              itemsPerPage={8}
-              title="لیست سفارشات"
-              emptyMessage="هیچ سفارشی یافت نشد"
-            />
+          <List
+            loadmore={loadMore}
+            configFilter={configFilter}
+            searchable={false}
+            changesearch={(p: any) => {
+              const conditions = ["name", "email"].reduce(
+                (a: any, f: any) => (
+                  a.push({ [f]: { contains: "q", mode: "insensitive" } }), a
+                ),
+                []
+              );
+              fetchData(true, {});
+              console.log(p);
+            }}
+            items={data?.data?.length > 0 ? data?.data : []}
+            columns={columns}
+            loadingmore={true}
+            onItemClick={handleItemClick}
+            // searchable={true}
+            sortable={true}
+            selectable={true}
+            pagination={true}
+            itemsPerPage={8}
+            title="لیست سفارشات"
+            emptyMessage="هیچ سفارشی یافت نشد"
+          />
           {/* {data?.data?.length > 0 ? (
 
           ) : (
