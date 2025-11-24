@@ -271,6 +271,7 @@ function OrderSummery() {
     submitUrl: "/api/main",
     initialData: {
       table: "product",
+      pageSize:1000,
       filters: {
         where: {
           id: { in: Object.keys(cart).map((d) => parseInt(d)) },
@@ -311,7 +312,7 @@ function OrderSummery() {
         </div>
 
         <div className="p-6 space-y-5">
-          <div className="space-y-3">
+          <div className="space-y-3 overflow-y-scroll h-50">
             {cart &&
               Object.entries(cart).map(([id, cartItem]: any) => {
                 const product = data?.data?.find((p: any) => p.id === parseInt(id));
